@@ -1,0 +1,348 @@
+{
+    "_comment": [
+        "connectivity_config.json.template — SAFE TO COMMIT.",
+        "To use: copy this file to connectivity_config.json,",
+        "fill in your actual IP and MAC values, and ensure",
+        "connectivity_config.json is listed in .gitignore.",
+        "",
+        "How to find values:",
+        "  Spark IP/MAC : run 'ip a' on the Spark (look for the UP interface)",
+        "  Dell IP      : run 'ipconfig' on the Dell (look for active Ethernet)",
+        "  Dell MAC     : run 'ipconfig /all' on the Dell (Physical Address)",
+        "",
+        "MAC address format: either colons (aa:bb:cc:dd:ee:ff) or dashes",
+        "(AA-BB-CC-DD-EE-FF) are accepted — the script normalizes both.",
+        "",
+        "Model names: always use the -ctx8k Modelfile variants for models",
+        "above 20B to avoid runaway context window memory allocation.",
+        "See memory_budget section below for the governing formula."
+    ],
+    "machines": {
+        "spark": {
+            "label"       : "NVIDIA Spark (LLM server)",
+            "ip"          : "0.0.0.0",
+            "mac"         : "00:00:00:00:00:00",
+            "description" : "Spark GB10 running Ollama"
+        },
+        "dell": {
+            "label"       : "Dell (dev workstation)",
+            "ip"          : "0.0.0.0",
+            "mac"         : "00:00:00:00:00:00",
+            "description" : "Dell running software stack"
+        },
+        "local": {
+            "label"       : "Localhost (single-machine mode)",
+            "ip"          : "127.0.0.1",
+            "mac"         : null,
+            "description" : "Single-machine dev mode — no remote server needed"
+        }
+    },
+    "ports": {
+        "ollama" : 11434,
+        "vllm"   : 8000,
+        "app"    : 8080
+    },
+    "test_defaults": {
+        "model"             : "mistral:7b",
+        "profile"           : "spark",
+        "timeout_tcp"       : 3.0,
+        "timeout_api"       : 5.0,
+        "timeout_inference" : 60.0
+    },
+    "memory_budget": {
+        "_comment": [
+            "MEMORY BUDGET FORMULA",
+            "─────────────────────",
+            "Total memory per agent:",
+            "  M_agent = M_weights + M_kvcache",
+            "",
+            "Weights (Q4 quantization approximation):",
+            "  M_weights ≈ 0.5 GB × B_params",
+            "  e.g. 70B model → ~35 GB;  32B → ~16 GB;  7B → ~3.5 GB",
+            "",
+            "KV cache:",
+            "  M_kvcache = (2 × n_layers × n_kv_heads × d_head × ctx_len × 2 bytes) / 1e9",
+            "  Simplified rule of thumb:",
+            "    M_kvcache_GB ≈ (n_layers × n_kv_heads × d_head × ctx_len) / 268_000_000",
+            "",
+            "Hardware agent capacity:",
+            "  N_hw = floor(M_available / M_agent)",
+            "",
+            "FOO minimum agent count (Byzantine consensus):",
+            "  N_foo(p, C) = ceil( log(1 - C) / log(p) )",
+            "  where p = per-agent invalidation rate, C = desired confidence",
+            "  e.g. p=0.20, C=0.99 → N_foo = 5",
+            "",
+            "Agent Feasibility Score (AFS):",
+            "  AFS = N_hw / N_foo",
+            "  AFS >= 1.0 required for a valid FOO consensus round.",
+            "  AFS < 1.0 means: reduce context window, downsize model,",
+            "  or relax confidence target C.",
+            "",
+            "Context window guidance:",
+            "  8K   → fast agents, many simultaneous, less document grounding",
+            "  32K  → balanced; recommended for MAX consensus tasks",
+            "  128K → deep document analysis; 1-2 agents max on Spark"
+        ],
+        "hardware": {
+            "spark": {
+                "total_ram_gb"     : 120,
+                "os_overhead_gb"   : 10,
+                "available_gb"     : 110,
+                "architecture"     : "ARM64",
+                "gpu_model"        : "NVIDIA GB10 (unified memory)",
+                "notes"            : "CPU+GPU share the same 120GB pool"
+            },
+            "dell": {
+                "total_ram_gb"     : 128,
+                "os_overhead_gb"   : 16,
+                "available_gb"     : 112,
+                "vram_gb"          : 16,
+                "architecture"     : "x86_64",
+                "gpu_model"        : "NVIDIA RTX A5500 Laptop GPU",
+                "notes"            : "16 GB VRAM discrete. Ollama loads weights into VRAM first, spills to system RAM. Inference degrades sharply once spilling starts."
+            }
+        },
+        "model_registry": {
+            "_comment": [
+                "M_weights_gb: approximate Q4 weight footprint.",
+                "kvcache_8k_gb: approximate KV cache at 8192 token context.",
+                "total_8k_gb: M_weights + kvcache_8k — the number that matters for N_hw.",
+                "status: confirmed | needs_modelfile | too_large | arm64_crash | untested",
+                "ollama_name: the name to use in API calls (use ctx8k variant for large models)"
+            ],
+            "nemotron-3-super:120b": {
+                "ollama_name"     : "nemotron-3-super:120b-ctx8k",
+                "params_b"        : 120,
+                "active_params_b" : 12,
+                "architecture"    : "MoE",
+                "m_weights_gb"    : 65,
+                "kvcache_8k_gb"   : 4,
+                "total_8k_gb"     : 69,
+                "status"          : "confirmed",
+                "tier"            : 1,
+                "role"            : "deep critic / complex reasoning",
+                "thinking"        : true,
+                "tools"           : true
+            },
+            "llama3.3:70b": {
+                "ollama_name"     : "llama3.3:70b-ctx8k",
+                "params_b"        : 70,
+                "active_params_b" : 70,
+                "architecture"    : "dense",
+                "m_weights_gb"    : 40,
+                "kvcache_8k_gb"   : 2.5,
+                "total_8k_gb"     : 42.5,
+                "status"          : "confirmed",
+                "tier"            : 1,
+                "role"            : "primary analyst",
+                "thinking"        : false,
+                "tools"           : true
+            },
+            "qwen3:32b": {
+                "ollama_name"     : "qwen3:32b-ctx8k",
+                "params_b"        : 32,
+                "active_params_b" : 32,
+                "architecture"    : "dense",
+                "m_weights_gb"    : 18,
+                "kvcache_8k_gb"   : 1.3,
+                "total_8k_gb"     : 19.3,
+                "status"          : "confirmed",
+                "tier"            : 1,
+                "role"            : "router / orchestrator",
+                "thinking"        : true,
+                "tools"           : true
+            },
+            "mistral-small:22b": {
+                "ollama_name"     : "mistral-small:22b",
+                "params_b"        : 22,
+                "active_params_b" : 22,
+                "architecture"    : "dense",
+                "m_weights_gb"    : 13,
+                "kvcache_8k_gb"   : 1.0,
+                "total_8k_gb"     : 14,
+                "status"          : "untested",
+                "tier"            : 2,
+                "role"            : "fast critic",
+                "thinking"        : false,
+                "tools"           : true
+            },
+            "phi4:14b": {
+                "ollama_name"     : "phi4:14b",
+                "params_b"        : 14,
+                "active_params_b" : 14,
+                "architecture"    : "dense",
+                "m_weights_gb"    : 8,
+                "kvcache_8k_gb"   : 0.8,
+                "total_8k_gb"     : 8.8,
+                "status"          : "untested",
+                "tier"            : 2,
+                "role"            : "fast critic / math",
+                "thinking"        : false,
+                "tools"           : false
+            },
+            "qwen3:14b": {
+                "ollama_name"     : "qwen3:14b",
+                "params_b"        : 14,
+                "active_params_b" : 14,
+                "architecture"    : "dense",
+                "m_weights_gb"    : 8,
+                "kvcache_8k_gb"   : 0.8,
+                "total_8k_gb"     : 8.8,
+                "status"          : "untested",
+                "tier"            : 2,
+                "role"            : "fast critic",
+                "thinking"        : true,
+                "tools"           : true
+            },
+            "mistral-nemo:12b": {
+                "ollama_name"     : "mistral-nemo:12b",
+                "params_b"        : 12,
+                "active_params_b" : 12,
+                "architecture"    : "dense",
+                "m_weights_gb"    : 7,
+                "kvcache_8k_gb"   : 0.7,
+                "total_8k_gb"     : 7.7,
+                "status"          : "untested",
+                "tier"            : 2,
+                "role"            : "synthesizer",
+                "thinking"        : false,
+                "tools"           : true
+            },
+            "mistral:7b": {
+                "ollama_name"     : "mistral:7b",
+                "params_b"        : 7,
+                "active_params_b" : 7,
+                "architecture"    : "dense",
+                "m_weights_gb"    : 4,
+                "kvcache_8k_gb"   : 0.5,
+                "total_8k_gb"     : 4.5,
+                "status"          : "confirmed",
+                "tier"            : 3,
+                "role"            : "utility / fast tasks",
+                "thinking"        : false,
+                "tools"           : true
+            },
+            "phi4-mini:3.8b": {
+                "ollama_name"     : "phi4-mini:3.8b",
+                "params_b"        : 3.8,
+                "active_params_b" : 3.8,
+                "architecture"    : "dense",
+                "m_weights_gb"    : 2.5,
+                "kvcache_8k_gb"   : 0.3,
+                "total_8k_gb"     : 2.8,
+                "status"          : "untested",
+                "tier"            : 3,
+                "role"            : "utility / fast tasks",
+                "thinking"        : false,
+                "tools"           : true
+            },
+            "gemma3:1b": {
+                "ollama_name"     : "gemma3:1b",
+                "params_b"        : 1,
+                "active_params_b" : 1,
+                "architecture"    : "dense",
+                "m_weights_gb"    : 0.8,
+                "kvcache_8k_gb"   : 0.1,
+                "total_8k_gb"     : 0.9,
+                "status"          : "untested",
+                "tier"            : 3,
+                "role"            : "ultra-fast utility",
+                "thinking"        : false,
+                "tools"           : false
+            },
+            "deepseek-r1:8b": {
+                "ollama_name"     : "deepseek-r1:8b",
+                "params_b"        : 8,
+                "active_params_b" : 8,
+                "architecture"    : "dense",
+                "m_weights_gb"    : 5,
+                "kvcache_8k_gb"   : 0.5,
+                "total_8k_gb"     : 5.5,
+                "status"          : "untested",
+                "tier"            : 3,
+                "role"            : "fast reasoning (thinking model)",
+                "thinking"        : true,
+                "tools"           : false
+            },
+            "deepseek-v3.1:671b": {
+                "ollama_name"     : "deepseek-v3.1:671b",
+                "params_b"        : 671,
+                "active_params_b" : 37,
+                "architecture"    : "MoE",
+                "m_weights_gb"    : 404,
+                "kvcache_8k_gb"   : 8,
+                "total_8k_gb"     : 412,
+                "status"          : "too_large",
+                "tier"            : null,
+                "role"            : "exceeds VRAM; runs off RAM at severe speed penalty",
+                "thinking"        : true,
+                "tools"           : true
+            },
+            "gemma3:4b": {
+                "ollama_name"     : "gemma3:4b",
+                "params_b"        : 4,
+                "active_params_b" : 4,
+                "architecture"    : "dense",
+                "m_weights_gb"    : 2.5,
+                "kvcache_8k_gb"   : 0.3,
+                "total_8k_gb"     : 2.8,
+                "status"          : "untested",
+                "tier"            : 3,
+                "role"            : "utility / vision capable",
+                "thinking"        : false,
+                "tools"           : false
+            },
+            "qwen3:4b": {
+                "ollama_name"     : "qwen3:4b",
+                "params_b"        : 4,
+                "active_params_b" : 4,
+                "architecture"    : "dense",
+                "m_weights_gb"    : 2.5,
+                "kvcache_8k_gb"   : 0.3,
+                "total_8k_gb"     : 2.8,
+                "status"          : "arm64_crash",
+                "tier"            : 3,
+                "role"            : "unavailable on Spark",
+                "thinking"        : true,
+                "tools"           : true
+            },
+            "deepseek-v3:671b": {
+                "ollama_name"     : "deepseek-v3:671b",
+                "params_b"        : 671,
+                "active_params_b" : 37,
+                "architecture"    : "MoE",
+                "m_weights_gb"    : 400,
+                "kvcache_8k_gb"   : 8,
+                "total_8k_gb"     : 408,
+                "status"          : "too_large",
+                "tier"            : null,
+                "role"            : "exceeds Spark memory",
+                "thinking"        : false,
+                "tools"           : true
+            }
+        },
+        "foo_consensus": {
+            "_comment": [
+                "N_foo(p, C) = ceil( log(1 - C) / log(p) )",
+                "p = per-agent invalidation probability",
+                "C = desired consensus confidence",
+                "AFS = N_hw / N_foo — must be >= 1.0 for a valid round"
+            ],
+            "reference_table": [
+                {"p": 0.30, "C": 0.95, "N_foo": 4},
+                {"p": 0.30, "C": 0.99, "N_foo": 6},
+                {"p": 0.20, "C": 0.95, "N_foo": 3},
+                {"p": 0.20, "C": 0.99, "N_foo": 5},
+                {"p": 0.10, "C": 0.95, "N_foo": 2},
+                {"p": 0.10, "C": 0.99, "N_foo": 3},
+                {"p": 0.05, "C": 0.99, "N_foo": 2}
+            ],
+            "default_assumption": {
+                "p": 0.20,
+                "C": 0.99,
+                "N_foo": 5
+            }
+        }
+    }
+}
