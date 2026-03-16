@@ -83,6 +83,185 @@ Using SSH avoids credential prompts and enables secure automated
 Git operations.
 
 % ============================================================
+\subsection{Pushing to Multiple Remote Repositories}
+\label{subsec:multiple-remotes}
+% ============================================================
+
+A single local repository can maintain simultaneous connections to any
+number of remote repositories. This is useful when a project must be
+mirrored across an organisation account and a personal account---for
+example, keeping the \textsc{Dair-3} workshop materials synchronised
+between the \texttt{DAIR3} organisation and the personal
+\texttt{biomathematicus} GitHub account.
+
+\subsubsection{Concepts}
+
+Git identifies remote repositories by short \emph{names}. The name
+\texttt{origin} is the conventional default assigned when a repository
+is first cloned. Additional remotes can be registered under any name.
+Each remote entry stores a fetch URL and a push URL, both of which can
+be set independently.
+
+\begin{infobox}
+A remote name is purely local---it exists only in the
+\texttt{.git/config} file on your machine and is never pushed to any
+server. Two developers cloning the same repository can give the same
+remote entirely different names without consequence.
+\end{infobox}
+
+\subsubsection{Listing Registered Remotes}
+
+Before adding a remote, confirm what is already registered:
+
+\begin{lstlisting}[style=bashstyle, caption={List all remotes and their URLs}]
+git remote -v
+\end{lstlisting}
+
+Each remote appears twice---once for fetch and once for push. A freshly
+cloned repository typically shows only \texttt{origin}:
+
+\begin{lstlisting}[style=inlineStyle]
+origin  https://github.com/DAIR3/DAIR3-Workshop.git (fetch)
+origin  https://github.com/DAIR3/DAIR3-Workshop.git (push)
+\end{lstlisting}
+
+\subsubsection{Adding a Second Remote}
+
+Register an additional remote with \texttt{git remote add}:
+
+\begin{lstlisting}[style=bashstyle, caption={Register a personal mirror remote (Linux / WSL)}]
+git remote add biomathematicus \
+    https://github.com/biomathematicus/DAIR3-Workshop.git
+\end{lstlisting}
+
+\begin{lstlisting}[style=psstyle, caption={Register a personal mirror remote (PowerShell)}]
+git remote add biomathematicus `
+    https://github.com/biomathematicus/DAIR3-Workshop.git
+\end{lstlisting}
+
+Verify the result:
+
+\begin{lstlisting}[style=bashstyle]
+git remote -v
+\end{lstlisting}
+
+The output should now show four lines:
+
+\begin{lstlisting}[style=inlineStyle]
+biomathematicus  https://github.com/biomathematicus/DAIR3-Workshop.git (fetch)
+biomathematicus  https://github.com/biomathematicus/DAIR3-Workshop.git (push)
+origin           https://github.com/DAIR3/DAIR3-Workshop.git (fetch)
+origin           https://github.com/DAIR3/DAIR3-Workshop.git (push)
+\end{lstlisting}
+
+\subsubsection{Pushing to Each Remote}
+
+With two remotes registered, every push must be issued explicitly to
+each destination. Git does not push to multiple remotes automatically
+unless a push target is configured:
+
+\begin{lstlisting}[style=bashstyle, caption={Push to both remotes explicitly}]
+git push origin HEAD
+git push biomathematicus HEAD
+\end{lstlisting}
+
+\texttt{HEAD} resolves to the current branch, which is the safest form
+to use in scripts because it does not depend on knowing the branch name
+in advance.
+
+\subsubsection{Checking Whether a Remote Exists Before Pushing}
+
+In automated scripts it is good practice to verify that a remote is
+registered before attempting to push to it, so a missing remote produces
+a clear diagnostic rather than a fatal error.
+
+\begin{lstlisting}[style=bashstyle, caption={Guard a push with a remote existence check (bash)}]
+if git remote get-url biomathematicus > /dev/null 2>&1; then
+    git push biomathematicus HEAD
+else
+    echo "Remote 'biomathematicus' not configured."
+    echo "Register it with:"
+    echo "  git remote add biomathematicus \
+https://github.com/biomathematicus/DAIR3-Workshop.git"
+fi
+\end{lstlisting}
+
+\begin{lstlisting}[style=psstyle, caption={Guard a push with a remote existence check (PowerShell / batch)}]
+git remote get-url biomathematicus >nul 2>&1
+if errorlevel 1 (
+    echo Remote 'biomathematicus' not configured.
+    echo Register it with:
+    echo   git remote add biomathematicus ^
+        https://github.com/biomathematicus/DAIR3-Workshop.git
+) else (
+    git push biomathematicus HEAD
+)
+\end{lstlisting}
+
+\subsubsection{Managing Remotes}
+
+Table~\ref{tab:git-remote-commands} summarises the full set of remote
+management commands.
+
+\begin{table}[h]
+\centering
+\caption{Git remote management commands}
+\label{tab:git-remote-commands}
+\begin{tabular}{lp{8.5cm}}
+\toprule
+Command & Effect \\
+\midrule
+\texttt{git remote -v} &
+  List all remotes with their fetch and push URLs. \\
+\texttt{git remote add <name> <url>} &
+  Register a new remote under the given name. \\
+\texttt{git remote remove <name>} &
+  Delete a remote entry from the local configuration. \\
+\texttt{git remote rename <old> <new>} &
+  Rename a remote without changing its URL. \\
+\texttt{git remote set-url <name> <url>} &
+  Update the URL of an existing remote. \\
+\texttt{git remote get-url <name>} &
+  Print the URL of a named remote; exits with an error if
+  the remote does not exist (useful in scripts). \\
+\texttt{git remote show <name>} &
+  Display detailed information about a remote, including
+  tracked branches and push configuration. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Alternative: a Single Remote with Multiple Push URLs}
+
+Git also supports configuring one remote name to push to two URLs
+simultaneously, so that a single \texttt{git push origin HEAD} reaches
+both destinations. This is convenient but reduces visibility---a failure
+on the second URL can be easy to miss in the output.
+
+\begin{lstlisting}[style=bashstyle, caption={Add a second push URL to the origin remote}]
+# The first push URL is already set from the clone.
+# Add the personal repo as an additional push target:
+git remote set-url --add --push origin \
+    https://github.com/DAIR3/DAIR3-Workshop.git
+git remote set-url --add --push origin \
+    https://github.com/biomathematicus/DAIR3-Workshop.git
+\end{lstlisting}
+
+\begin{warningbox}
+When using \texttt{set-url --add --push}, note that the \emph{first}
+call replaces the default push URL rather than adding to it. Both URLs
+must be specified explicitly as shown above. Verify the result with
+\texttt{git remote -v} before relying on this configuration in
+automated scripts.
+\end{warningbox}
+
+For the \textsc{Alice} project, the explicit two-remote approach
+(separate \texttt{git push} calls per remote) is preferred because
+\texttt{gh.bat} checks \texttt{errorlevel} after each push and can
+report failures independently. A combined push URL would surface only
+the second failure.
+
+% ============================================================
 \section{Python Virtual Environments}
 \label{sec:venvs}
 % ============================================================
