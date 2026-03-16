@@ -129,26 +129,23 @@ Because floating point numbers cannot represent all real numbers, errors of repr
 
 The following instruction compares whether $10^{30} + 1 - 10^{30}$ equals the value 1. Using elementary arithmetic, the answer should be a resounding \textit{yes}. In the Python language, the exponent is represented by a double asterisk, like in Fortran, instead of the carat sign (\^{}) used in most other computing platforms. The double equal sign tests whether the two sides are equal, and returns a Boolean value of \textit{true} or \textit{false}. Hence, the question is translated into the following instruction: 
 
-\BeginCode 
+\begin{lstlisting}[language=Python]
 	10**30 + 1 - 10**30 == 1   
-\end{verbatim}
-\EndCode 
+\end{lstlisting}
 
 This particular instruction  returns a Boolean value of \textit{true} in Python and \textit{false} in Matlab (the correct Matlab syntax is $10\hat{\phantom{.}}30 + 1 - 10\hat{\phantom{.}}30 == 1$). However, the following statement:  
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 	10**30 + 1. - 10**30 == 1
-\end{verbatim}
-\EndCode 
+\end{lstlisting}
 
 \noindent returns \textit{false} in Python. Why? \QA 
 
 An operation like 
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 	10**20 + 1 - 10**20 == 1
-\end{verbatim}
-\EndCode 
+\end{lstlisting}
 
 \noindent returns different results in Matlab, C, Fortran (\textit{false}) vs. Python (\textit{true}). It might be tempting to declare Python the winner in numerical computation, but what truly happens is that Python does not follow the IEEE-754 standard strictly. To learn about more subtleties of floating point in Python, go to \url{https://docs.python.org/3/tutorial/floatingpoint.html} In most cases, deviations from the standard in the Python interpreter are harmless and have an ideological origin rather than a technical one. However, it is conceivable that extreme algorithms developed under the IEEE standard would have to be carefully adapted in Python. There are alternatives, but they are beyond the scope of this chapter. For now, it suffices to say that there are landmines in the Python landscape. 
 	
@@ -162,10 +159,9 @@ We can explore further discrepancies in extreme floating point values by explori
 
 To execute mathematical operations beyond basic operations with real numbers, you need to import a numerical library. Matrix operations are executed through functions in NumPy. Hence, the first step is to load NumPy. 
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 In : import numpy as np
-\end{verbatim}
-\EndCode
+\end{lstlisting}
 
 The library NumPy offers easy access to commonly used constants, such as:
 
@@ -210,11 +206,10 @@ There are also functions, such as cosine or sine. You surround the
 input to the function by parenthesis. For example, to calculate the
 square root of two, you type
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 In 	: np.sqrt(2)
 Out	: 1.4142135623730951
-\end{verbatim}
-\EndCode
+\end{lstlisting}
 
 However, you cannot use the function {\s sqrt} with negative numbers. What would you have to do to alloy Python to compute the square root of a negative number and return a complex number? \QA  %So, instead of {\s sqrt(-2)} you will have to use {\s (-2)**0.5}. 
 
@@ -222,24 +217,21 @@ The library NumPy has \textit{many} functions. A comprehensive list can be found
 
 Now enter the following command: 
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 	x = np.random.standard_normal(3)  
-\end{verbatim}
-\EndCode 
+\end{lstlisting}
 
 There is no output. Why do you think this is the behavior? \QA On the right-hand side of the Spyder window there is a tab called \textit{Variable Explorer}. It will show the value of $x$. Alternatively, you can enter 
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 	print(x)
-\end{verbatim}
-\EndCode 
+\end{lstlisting}
 
 Alternatively, you can print the result directly without assigning it to a variable. Try
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 	print(np.random.standard_normal(3))
-\end{verbatim}
-\EndCode 
+\end{lstlisting}
 
 Why are the results of this last operation different to the values stored in variable $x$? \QA
 
@@ -314,7 +306,7 @@ we can access each dimension individually.
 
 Using the matrix $A$ of our previous examples, 
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 In 	: y = A.shape()
 In 	: y
 Out : (3,3)
@@ -322,12 +314,11 @@ In 	: y[0]
 Out : 3
 In 	: y[1]
 Out : 3
-\end{verbatim}
-\EndCode
+\end{lstlisting}
 
 The following example will illustrate a subtlety in copying matrices:
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 In 	: D = A
 Out : 
 array([[1, 2, 3],
@@ -339,8 +330,7 @@ Out :
 array([[9, 2, 3],
        [4, 5, 6],
        [7, 8, 9]])
-\end{verbatim}
-\EndCode
+\end{lstlisting}
 
 Note that by updating a value in $D$, the corresponding value in $A$ was changed. Why? What would you need to do to prevent an update in $D$ to change $A$?  \QA 
 
@@ -363,19 +353,17 @@ $A\star\star 2$ 		&  Element-wise exponentiation\\
 
 NumPy gives an easy way of solving systems of linear equations, Given the matrix $A$ and the vector $\bb$ from the previous examples, the linear system $A\x = \bb$ can be solved by invoking {\s np.linalg.solve} as follows
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 In 	: x = np.linalg.solve(A,b)
 Out : array([-0.23333333,  0.46666667,  0.1       ])
-\end{verbatim}
-\EndCode
+\end{lstlisting}
 
 It is easy to use Matrix multiplication $A\x$ to check the answer
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 In 	: A@x
 Out : array([1., 2., 3.])
-\end{verbatim}
-\EndCode
+\end{lstlisting}
 
 
 %-----------------------------------------

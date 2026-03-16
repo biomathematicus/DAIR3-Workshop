@@ -221,24 +221,22 @@ It is possible that you might not know how to answer some of these questions on 
 
 A simple program that can help you explore this file is
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 f = open("US1969.dat", "r", encoding="cp1252")
 counter = 0;
 for x in f:
     if x[0] == "9" and [... other conditions?]
         counter = counter + 1
 print(counter)
-\end{verbatim}
-\EndCode
+\end{lstlisting}
 %
 
 Note that in Python indexing is subtle. For example: 
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 x = [10, 20, 30, 40, 50]
-x[1:3]  # → [20, 30]  (indices 1 and 2, not 3)
-\end{verbatim}
-\EndCode
+x[1:3]  # This is [20, 30]  (indices 1 and 2, not 3)
+\end{lstlisting}
 
 The instruction \textit{encoding=``cp1252"} is necessary in non-Windows systems due the presence of single-byte character encoding of the Latin alphabet, used by default in the legacy components of Microsoft Windows for English and many European languages including Spanish, French, and German. If you remove this instruction, the following error might show up in non-Windows operating systems: ``'utf-8' codec can't decode byte...''
 

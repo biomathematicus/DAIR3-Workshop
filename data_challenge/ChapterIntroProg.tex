@@ -134,59 +134,52 @@ $\star\star$&      Power \\
 
 Some commands are just like you would type things in a calculator. If you want to refer the result of the command, you need to give it a name, or in other words, assign the result to a variable. The following command assigns the result to the variable s. (Note that Python didn't save the true answer 7/12 but rather a decimal approximation.)
 
-\BeginCode	
+\begin{lstlisting}[language=Python]
 >>> s = 1/3 + 1/4
-\end{verbatim}
-\EndCode 
+\end{lstlisting}
 
 If you want to know what the variable $s$ contains, simply type its name in the command prompt: 
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 >>> s
 0.5833333333333333 
-\end{verbatim}
-\EndCode
+\end{lstlisting}
 
 If a command does not fit on one line, use a backslash (\textbackslash) followed by Return/Enter to indicate that the statement continues on the next line. For example,
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 >>> s = 1 - 1/2 + 1/3 -1/4 + 1/5 - 1/6 + 1/7 \
 ... :- 1/8 + 1/9 - 1/10 + 1/11 - 1/12  
-\end{verbatim}
-\EndCode
+\end{lstlisting}
 
 Type $s$ and Enter to see the new value of $s$. 
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 >>> s
 0.6532106782106782
-\end{verbatim}
-\EndCode
+\end{lstlisting}
 
 Use the double star($**$) to raise something to an exponent.
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 >>> 89**2
 7921 
-\end{verbatim}
-\EndCode
+\end{lstlisting}
 
 Imaginary numbers can be used with the constant $j$, which stands for $\sqrt{-1}$ by default. 
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 >>> (1j)**2
 (-1+0j)
-\end{verbatim}
-\EndCode
+\end{lstlisting}
 
 Hence, you must be careful in using the variable $j$ when dealing with complex numbers. What do you expect from the following operation? Can you explain what you observe? You might need to complete the entire  chapter before you can answer this question. \QA
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 >>> j = 10
 >>> j = j*(-1)**(0.5)
 >>> j
-\end{verbatim}
-\EndCode
+\end{lstlisting}
 
 Does the result stored in the variable {\s j} match your expectation? Explain. \QA
 
@@ -268,19 +261,17 @@ Now, we will modify this file. Append at the end a program called {\s sum2} in w
 
 The command {\s python [filename]} can be used to execute a Python program from the terminal, or any command line prompt. But if we run the following in the command prompt, nothing happens:
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 	python lab1Function.py
-\end{verbatim}
-\EndCode 
+\end{lstlisting}
 
 Why? \QA 
 
 Now, add the following line of code to the end of the file, \textbf{without indentation}: 
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 print(sum1(2))
-\end{verbatim}
-\EndCode 
+\end{lstlisting}
 
 Execute the program. What was the result of {\s sum1(2)}? Is this what you expected? Why? \QA Compute by hand what the output of {\s sum1(3)} should be. Now change the last line in the program to read {\s print(sum1(2))} 
 
@@ -296,24 +287,21 @@ In the previous section, we added a single line of code at the end of the progra
 
 We will now import the function {\s sum1} from the file {\s lab1Function.py}. To do this,  execute the following command: 
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 	import lab1function as LAB1
-\end{verbatim}
-\EndCode 
+\end{lstlisting}
 
 This instruction loads into memory a directory of all functions present in that file. Now you can invoke the functions you created. For example, 
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 	LAB1.sum2(3)
-\end{verbatim}
-\EndCode 
+\end{lstlisting}
  
 It is also possible to load into memory a single function from a file. We can accomplish this by executing
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 	from lab1function import sum1
-\end{verbatim}
-\EndCode 
+\end{lstlisting}
 
 In this case, there is no alias associated with the function. To use, you can simply call the function with a parameter, as in {\s sum2(3)}
 
@@ -326,28 +314,25 @@ Numerical operations can be programmed in Python. A library called {\s NumPy} en
 
 For example, at the Python prompt type in the following command and press Enter.
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 	import numpy as np  
-\end{verbatim}
-\EndCode 
+\end{lstlisting}
 
 This command loads into memory a reference to the NumPy library. Now you can access all functions in this library by using the prefix {\s np}; this is an \textit{alias}. You can pick any alias you want, but it is customary to use {\s np} for NumPy. Now enter the following command: 
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 	np.sqrt(9)  
-\end{verbatim}
-\EndCode 
+\end{lstlisting}
 
 The function {\s sqrt} computes the square root of a real number. Here is an example, and the resulting values.
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 >>> rho = (1+np.sqrt(5))/2
 >>> rhoSq = rho**2
 >>> a = rhoSq + rho
 >>> a
 4.23606797749979
-\end{verbatim}
-\EndCode
+\end{lstlisting}
 
 However, you cannot use the function {\s sqrt} with negative numbers. What would you have to do to alloy Python to compute the square root of a negative number and return a complex number? \QA  %So, instead of {\s sqrt(-2)} you will have to use {\s (-2)**0.5}. 
 
@@ -393,24 +378,21 @@ Function 			& Operation \\
 
 The library NumPy has \textit{many} functions. A comprehensive list can be found at \url{https://numpy.org/doc/stable/reference/}.  Now enter the following command: 
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 	x = np.random.standard_normal(3)  
-\end{verbatim}
-\EndCode 
+\end{lstlisting}
 
 There is no output. Why do you think this is the behavior? \QA On the right-hand side of the Spyder window there is a tab called \textit{Variable Explorer}. It will show the value of $x$. Alternatively, you can enter 
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 	print(x)
-\end{verbatim}
-\EndCode 
+\end{lstlisting}
 
 Alternatively, you can print the result directly without assigning it to a variable. Try
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 	print(np.random.standard_normal(3))
-\end{verbatim}
-\EndCode 
+\end{lstlisting}
 
 Why are the results of this last operation different to the values stored in variable $x$? \QA
 
@@ -487,7 +469,7 @@ we can access each dimension individually.
 
 Using the matrix $A$ of our previous examples, 
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 >>> y = A.shape()
 >>> y
 (3,3)
@@ -495,12 +477,11 @@ Using the matrix $A$ of our previous examples,
 3
 >>> y[1]
 3
-\end{verbatim}
-\EndCode
+\end{lstlisting}
 
 The following example will illustrate a subtlety in copying matrices:
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 >>> D = A
 
 array([[1, 2, 3],
@@ -512,8 +493,7 @@ array([[1, 2, 3],
 array([[9, 2, 3],
        [4, 5, 6],
        [7, 8, 9]])
-\end{verbatim}
-\EndCode
+\end{lstlisting}
 
 Note that by updating a value in $D$, the corresponding value in $A$ was changed. Why? What would you need to do to prevent an update in $D$ to change $A$?  \QA 
 
@@ -536,19 +516,17 @@ Operation 		& Outcome \\
 
 NumPy gives an easy way of solving systems of linear equations, Given the matrix $A$ and the vector $\bb$ from the previous examples, the linear system $A\x = \bb$ can be solved by invoking {\s np.linalg.solve} as follows
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 >>> x = np.linalg.solve(A,b)
 array([-0.23333333,  0.46666667,  0.1       ])
-\end{verbatim}
-\EndCode
+\end{lstlisting}
 
 It is easy to use Matrix multiplication $A\x$ to check the answer
 
-\BeginCode
+\begin{lstlisting}[language=Python]
 >>> A@x
 array([1., 2., 3.])
-\end{verbatim}
-\EndCode
+\end{lstlisting}
 
 
 % %======================================
