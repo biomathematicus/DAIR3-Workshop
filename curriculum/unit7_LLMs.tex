@@ -3,92 +3,582 @@
 \label{chap:unit7}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\textbf{Total Time: 3 hours}
+\textbf{Total Time: 5 hours}
+
+This unit prepares participants to use large language model (LLM)
+based AI agents as rigorous, accountable tools in biomedical data
+science research. The unit is \emph{load-bearing}: its deliverables
+are components of the 2026 Data Challenge final report. Students
+work with the same NCHS vital statistics database used throughout
+the bootcamp, using an LLM ensemble to assist with data navigation,
+methodological decision-making, grant review, and manuscript
+preparation---while maintaining human accountability for every output.
+
+Three principles organize the unit. First, invalidation
+(a framework broader than ``hallucination'' that encompasses
+factual, logical, normative, and structural breaches) is
+mathematically inevitable in any LLM-generated output; human
+verification is therefore not optional. Second, cross-agent
+critique reduces invalidation rates below what any single model
+achieves, but introduces its own ethical tradeoffs that must be
+actively managed. Third, race and ethnicity in biomedical data are
+social constructs whose reification in data systems has real
+consequences; LLMs applied to historical vital statistics data are
+particularly prone to normative invalidation when treating racial
+categories as stable natural kinds.
 
 %================================================================
 \section{The Ethics of AI Agents}
 \label{sec:7.1}
 %================================================================
 
-\textbf{Time: 1 hour (Instructional: 50 minutes, Project Work: 10 minutes)}
+\textbf{Time: 1 hour (Instructional: 50 minutes, Protocol Construction: 10 minutes)}
 
-This lesson examines the ethical dimensions of using LLM-based AI agents in biomedical data science. Unlike single-turn chatbot interactions, agentic workflows involve planning, tool use, memory, and multi-agent coordination, expanding the ethical surface area considerably. Students will learn to identify invalidation risks (a broader concept than ``hallucination''), understand accountability frameworks for agent-assisted research, and apply governance-by-design principles aligned with Responsible Conduct of Research (RCR) standards.
+This lesson examines the ethical dimensions of using LLM-based AI
+agents in biomedical data science. Unlike single-turn chatbot
+interactions, agentic workflows involve planning, tool use,
+persistent memory, and multi-agent coordination, substantially
+expanding the ethical surface area of AI-assisted research.
+Students develop a framework for identifying and classifying
+invalidation risks, analyze the specific ethical challenges posed
+by historical vital statistics data with inconsistently encoded
+racial and ethnic categories, and produce a \emph{Research AI
+Governance Protocol} that governs their own use of LLM tools
+throughout Sections~\ref{sec:7.2} and~\ref{sec:7.3}.
+
+The lesson proceeds in four instructional blocks:
+
+\begin{enumerate}
+    \item \textbf{Agent architecture and expanded ethical surface
+    (15 min).} What distinguishes an AI agent from a chatbot:
+    planning, tool use, memory, and multi-agent coordination.
+    Each capability adds a distinct ethical surface. The discursive
+    network framework explains why agent-generated statements that
+    enter manuscripts acquire authority independent of their accuracy,
+    making verification a structural responsibility rather than an
+    optional quality check.
+
+    \item \textbf{Invalidation: a taxonomy broader than hallucination
+    (15 min).} The four types of invalidation---factual, logical,
+    normative, and structural---are introduced using NCHS-specific
+    examples. Factual: an LLM names a variable not present in the
+    DVS schema as a named field. Logical: an LLM recommends a rate
+    denominator inconsistent with the research question's population
+    definition. Normative: an LLM interprets racial disparities in
+    birthweight as reflecting biological differences between racial
+    groups rather than the consequences of racism. Structural: an
+    LLM queries APGAR score columns for records before 1977, when
+    those columns did not exist in the flat file. Each type requires
+    a distinct verification strategy.
+
+    \item \textbf{Race-consciousness in biomedical data science
+    (15 min).} Race is a social construct with no valid biological
+    basis, but its reification in law, medicine, and data systems
+    makes it real in its consequences. Birth outcomes differ by
+    recorded race not because of intrinsic racial biology but because
+    of racism: differential access to prenatal care, chronic stress
+    from discrimination, environmental exposures in historically
+    redlined neighborhoods, and differential clinical treatment.
+
+    The specific NCHS data students are working with encodes race
+    through a system that changed across the study period. From 1969
+    through 1977, race was assigned from a fixed set (White, Black,
+    American Indian, Chinese, Japanese, Other), and for parents
+    of different recorded races the child's race followed the
+    mother's. Assignment rules were revised in 1978, inconsistently
+    across states. The ``Hispanic'' ethnic category appeared late
+    in the period and was collapsed into ``White'' in some years.
+    The \texttt{child\_race\_recode\_3} field changed its encoding
+    midway through the study period. Any LLM query about race in
+    this dataset risks producing normative invalidation by treating
+    these categories as stable, comparable, and biologically grounded
+    across the full 1969--1986 span.
+
+    \item \textbf{Ethics checklist and governance protocol
+    construction (20 min).} The seven risk categories from the
+    ethics framework---epistemic, accountability and authorship,
+    provenance and reproducibility, confidentiality, bias and
+    fairness, security, and sustainability---are reviewed with
+    emphasis on the tradeoffs specific to this bootcamp context.
+    Multi-agent critique tradeoffs: privacy amplification, epistemic
+    homogenization, compute burden, and attribution diffusion.
+    Students construct the Research AI Governance Protocol that
+    governs their subsequent work.
+\end{enumerate}
 
 \subsection{Learning Objectives}
 
 \begin{enumerate}
-    \item Define an AI agent in terms of planning, tool use, memory, and multi-agent interaction, and explain why agentic workflows expand ethical risk compared to single-turn model use.
-    \item Explain invalidation (factual, logical, normative, structural) as a framework broader than ``hallucination,'' and identify at least three invalidation types relevant to biomedical data science.
-    \item Apply an ethics checklist to an agentic research workflow, identifying concrete risks in accuracy, authorship, privacy/confidentiality, bias, security, and sustainability.
-    \item Evaluate when multi-agent critique can improve reliability and when it may be inappropriate due to confidentiality constraints, compute burden, or epistemic homogenization.
-    \item Draft a compliant disclosure and accountability statement for agent-assisted work aligned with COPE/ICMJE/WAME publication-ethics norms.
+    \item Define an AI agent in terms of planning, tool use,
+    memory, and multi-agent interaction, and explain how each
+    capability expands the ethical surface area relative to
+    single-turn LLM use.
+
+    \item Apply the four-type invalidation taxonomy---factual,
+    logical, normative, and structural---to concrete scenarios
+    involving the NCHS vital statistics database, and identify
+    the appropriate verification strategy for each type.
+
+    \item Articulate why race and ethnicity in historical US
+    vital statistics data are social constructs whose reification
+    has real health consequences, and explain the specific coding
+    inconsistencies in the NCHS 1969--1986 dataset that make
+    naive racial comparisons normatively invalid.
+
+    \item Construct a Research AI Governance Protocol specifying
+    provenance logging, invalidation classification, race-variable
+    handling, escalation thresholds, and a compliant disclosure
+    statement for the team's subsequent AI-assisted work.
 \end{enumerate}
 
 \subsection{Assessment Instrument}
 
+\textbf{Item 1 --- Invalidation Taxonomy Application (in-session,
+8 minutes):}
+The instructor presents four NCHS-specific LLM output scenarios,
+one per invalidation type. For each scenario, teams identify:
+(a) the invalidation type, (b) why it constitutes that type and
+not another, and (c) the verification method that would detect
+and correct it. Scenarios are drawn from realistic ensemble
+outputs on the vital statistics database.
+
+\textbf{Item 2 --- Research AI Governance Protocol
+(in-session construction, 10 minutes; referenced throughout
+Sections~\ref{sec:7.2} and \ref{sec:7.3}):}
+Each team produces a one-page governance protocol containing
+all five required components:
 \begin{enumerate}
-    \item \textbf{Knowledge Check (6 minutes):} A short quiz covering: (a) distinguishing features of agents vs. chatbots, (b) types of invalidation, (c) authorship attribution for AI-assisted work, (d) confidentiality risks in peer review contexts, and (e) multi-agent compute tradeoffs.
+    \item \textbf{Provenance logging convention:} how prompts,
+    model identifiers, and timestamps will be recorded for every
+    ensemble interaction.
 
-    \item \textbf{Case-Based Evaluation (12 minutes):} In small groups, analyze a scenario where an agentic pipeline generates a data dictionary, drafts methods text, proposes models, and summarizes results for the vital statistics data challenge. Identify risks and produce a 5-bullet ``agent governance plan'' addressing epistemic risk, confidentiality, authorship, bias/security, and sustainability.
+    \item \textbf{Invalidation log format:} the template for
+    recording invalidation type, description, and resolution for
+    each detected LLM failure.
 
-    \item \textbf{Disclosure Statement:} Write a one-sentence disclosure describing how AI tools were used in an analysis, suitable for inclusion in a manuscript methods section.
+    \item \textbf{Race variable handling clause:} specific
+    commitments about how race and ethnicity fields will be
+    treated in LLM queries given the documented coding
+    inconsistencies of the NCHS dataset. At minimum: LLM queries
+    involving race variables must inject the relevant coding
+    history as context; temporal comparisons of racial category
+    rates require explicit justification; normative claims about
+    racial disparities must be flagged for human review.
+
+    \item \textbf{Escalation threshold:} the conditions under
+    which LLM output will not be used without independent
+    verification or correction (e.g., any factual claim about
+    NCHS variable definitions; any normative statement about
+    population health disparities; any generated code before
+    execution).
+
+    \item \textbf{Draft disclosure statement:} a single sentence
+    in the form specified by the ethics framework, naming tools
+    and tasks, to be finalized at the end of Section~\ref{sec:7.3}.
 \end{enumerate}
 
+The governance protocol is a live document. It is updated
+throughout Sections~\ref{sec:7.2} and~\ref{sec:7.3} as
+invalidations are encountered and resolved, and its disclosure
+statement is finalized as the unit's final deliverable.
+
 %================================================================
-\section{AI Agents for Technical Tasks: Consensus in LLMs}
+\section{AI Agents for Technical Tasks}
 \label{sec:7.2}
 %================================================================
 
-\textbf{Time: 1 hour (Instructional: 45 minutes, Project Work: 15 minutes)}
+\textbf{Time: 2 hours (Instructional: 40 minutes, Activity Work:
+80 minutes)}
 
-This lesson introduces the theoretical foundations of transformer models and demonstrates how multiple LLM systems can be orchestrated to achieve consensus on technical tasks. Participants will work hands-on with APIs from multiple providers (e.g., OpenAI GPT, Anthropic Claude) to compare model behaviors and understand how cross-model verification can reduce invalidation. The emphasis is on programmatic integration via APIs rather than web-based interfaces, preparing participants to build robust, verifiable analysis pipelines.
+This lesson teaches students to use an LLM ensemble as a rigorous
+technical collaborator on analytical tasks grounded in the NCHS
+vital statistics database. The session has four sequential blocks.
+Block~A derives the mathematical basis for multi-agent consensus
+and produces the agent-count commitments that govern subsequent
+activities. Blocks~B, C, and~D form an analytical chain: outputs
+from each block feed the next, and their collective products are
+load-bearing components of the final data challenge report.
+
+The governing framework is the \emph{Flaws-of-Others} (FOO)
+algorithm, in which multiple agents independently produce outputs,
+each critiques the others' responses, and a harmonizer synthesizes
+the critiques into a refined result. The minimum number of
+mutually detecting agents required to reduce the long-run
+false-statement share below a tolerance $\varepsilon$ is:
+%
+\begin{equation}
+    n_{\min} =
+    \left\lceil
+        1 + \frac{p\!\left(\dfrac{1}{\varepsilon} - 1\right) - q}{d}
+    \right\rceil
+    \label{eq:nmin}
+\end{equation}
+%
+where $p$ is the per-agent invalidation rate, $q$ is the internal
+self-repair rate ($q = 0.05$ reference value), and $d$ is the
+cross-detection probability ($d = 0.19$ reference value). Students
+use this formula to make defensible, quantitative decisions about
+ensemble size for each activity.
+
+\subsection*{Block A --- FOO Framework: Derivation and Calibration
+(20 minutes instructional)}
+
+The derivation proceeds from first principles. A single agent has
+an effective invalidation rate $p$ (combining intrinsic corruption
+and fabrication). Internal self-repair operates at rate $q$.
+Each additional cross-checking agent adds detection hazard $d$
+to the effective correction rate. The steady-state false-statement
+share with $n$ mutually detecting agents is:
+%
+\begin{equation}
+    \pi_F^{(n)} = \frac{p}{p + q + (n-1)d}
+    \label{eq:steadystate}
+\end{equation}
+%
+Setting $\pi_F^{(n)} \leq \varepsilon$ and solving for $n$ yields
+Eq.~(\ref{eq:nmin}). The invalidation floor---proved formally in the
+underlying theory---establishes that some error rate is
+mathematically inevitable in any finite-loss LLM; the FOO
+architecture is the engineering response to this impossibility
+result.
+
+Students compute $n_{\min}$ for three task categories they will
+encounter in this session using the reference values above:
+%
+\begin{center}
+\begin{tabular}{llccc}
+\toprule
+Task category & Example & $p$ & $\varepsilon$ & $n_{\min}$ \\
+\midrule
+Factual schema lookup & Identify correct byte range
+    for birthweight & 0.10 & 0.10 & \emph{compute} \\
+Methodological judgment & Choose projection model
+    for county-level rates & 0.30 & 0.05 & \emph{compute} \\
+Code generation & SQL query for core
+    research question & 0.20 & 0.05 & \emph{compute} \\
+\bottomrule
+\end{tabular}
+\end{center}
+%
+The computed values are entered into the governance protocol as
+the team's agent-count commitments for Blocks~B, C, and~D.
+
+\subsection*{Block B --- The Texas Births Problem (35 minutes)}
+
+Before the bootcamp, participants were asked to count live births
+in Texas in 1969 to mothers residing in Texas. Teams compare their
+answers. Historically, different correct implementations of this
+query return different counts. The task is to diagnose the source
+of disagreement using the LLM ensemble.
+
+Teams query the ensemble with the NCHS data dictionary and ask it
+to: (a)~identify every field relevant to the filter, (b)~flag
+any ambiguities in the dictionary language, and (c)~write a query
+implementing the most defensible interpretation. Teams execute
+the generated query and compare counts across the class.
+
+The instructor then surfaces the documented sources of ambiguity:
+the \texttt{resident} flag records whether the mother is a resident
+of the \emph{reporting area} (not necessarily Texas); the
+place-of-residence field encodes the mother's state; and the
+reporting area field records where the birth was registered. A
+count restricted to records where the birth \emph{occurred} in
+Texas differs from one restricted to mothers \emph{residing} in
+Texas, and both differ from one using the resident flag. The
+``live birth'' filter has no explicit flag---it is the absence
+of certain mortality indicators that were encoded differently
+across years.
+
+The deliverable is annotated, executable code (Python or SQL) that
+implements the correct filter with comments explaining each
+disambiguation decision. This code is a candidate component of
+the reproducible pipeline developed in Unit~5.
+
+\subsection*{Block C --- Race Variable Temporal Inconsistency
+(15 minutes)}
+
+Building directly on Section~\ref{sec:7.1}, students encounter
+the race variable problem in the actual data. Teams query the
+ensemble with the race coding history injected as context and ask
+it to: (a)~identify which race-related variable or combination
+is most defensible for the projection analysis, (b)~specify which
+temporal comparisons are valid and which are not, and
+(c)~identify any normative claims in its own response.
+
+The key learning outcomes are: (1)~students observe whether the
+ensemble correctly identifies the temporal inconsistency and flags
+its own normative claims, (2)~students discover how injecting the
+coding history as context changes ensemble output---demonstrating
+retrieval-augmented generation as a concrete mitigation for
+normative and structural invalidation, and (3)~students update the
+race variable handling clause in their governance protocol based
+on what they actually encountered.
+
+\subsection*{Block D --- Methodological Consensus on Projection
+Approach (30 minutes)}
+
+The data challenge requires projections to 2030. The NCHS data
+ends in 1986. The analytical chain is NCHS $\rightarrow$ SEER
+$\rightarrow$ SEDAC. Teams query the ensemble on three candidate
+modeling strategies:
+
+\textbf{Approach~A --- County-level linear trend extrapolation.}
+Fit a per-county linear trend to the 1969--1986 NCHS baseline;
+extend to 2030 using SEER population denominators. Required
+assumption: secular trend is approximately stationary over the
+extrapolation period. Key risk: 44-year extrapolation from a
+17-year baseline with no structural break correction.
+
+\textbf{Approach~B --- Multilevel model with county random effects.}
+Fit a mixed model with county random effects on the NCHS period;
+use SEER projections as denominators for forward extrapolation.
+Required assumption: random-effect variance structure is stationary
+beyond the data period. Key risk: partial pooling stabilizes sparse
+counties but does not improve extrapolation validity.
+
+\textbf{Approach~C --- Age-period-cohort model linked to SEER
+denominators.} Separate age, period, and cohort effects with SEER
+denominators applied at each projection step. Required assumption:
+identification constraints are defensible and explicitly justified.
+Key risk: APC models are not uniquely identified without additional
+constraints; the choice of constraint is a substantive modeling
+decision.
+
+For each approach, the ensemble is asked to evaluate: (a)~the key
+assumptions required for validity, (b)~the identifiability
+conditions, (c)~the major failure modes in this specific
+extrapolation context, and (d)~published precedent for this type
+of vital statistics projection. Teams apply the $n_{\min}$ value
+computed for methodological judgment tasks.
 
 \subsection{Learning Objectives}
 
 \begin{enumerate}
-    \item Describe the core architecture of transformer models (attention mechanisms, tokenization, context windows) and explain how transformers evolve into Large Language Models.
-    \item Compare and contrast simple Artificial Neural Networks (ANNs) with transformer architectures, articulating the advantages of attention-based models for sequential data.
-    \item Set up and authenticate programmatic access to multiple LLM APIs (OpenAI, Anthropic) using Python, demonstrating environment configuration and secure credential management.
-    \item Execute a consensus framework across multiple LLMs, either manually via parallel browser sessions or programmatically using provided source code templates.
-    \item Analyze convergent and divergent responses from multiple models to identify high-confidence outputs versus areas requiring human review.
+    \item Derive the FOO minimum-agent formula from the steady-state
+    false-share equation and compute $n_{\min}$ for tasks of
+    varying epistemic difficulty, applying the result to make
+    quantitative ensemble-size decisions.
+
+    \item Use an LLM ensemble to navigate an ambiguous biomedical
+    data dictionary, verify outputs against the authoritative
+    database schema, and produce annotated executable code
+    that implements a defensible query with all disambiguations
+    documented.
+
+    \item Evaluate the temporal inconsistency of racial and ethnic
+    categories in the NCHS 1969--1986 dataset and produce a written
+    race-variable handling strategy grounded in both the social
+    construct framework and the specific coding history of the data.
+
+    \item Produce a structured methodological consensus memo
+    evaluating competing projection approaches, with
+    FOO-calibrated confidence levels, a synthesis recommendation,
+    and a retrospective comparison to the analytic plan developed
+    in Unit~3.
 \end{enumerate}
 
 \subsection{Assessment Instrument}
 
-\textbf{Pre-workshop requirement:} Complete environment setup for local API access to at least two LLM providers.
+\textbf{Item 3 --- Verified Data Query: Texas Birth Count
+(Block~B deliverable):}
+Annotated, executable code implementing the correct Texas birth
+count filter. The annotation must explain: (a)~each filter field
+used and why, (b)~each source of ambiguity in the data dictionary
+and how it was resolved, (c)~the count produced, and (d)~at least
+one invalidation from the ensemble interaction, logged in the
+governance protocol format.
 
-\textbf{In-session task (30 minutes):} Using the consensus framework (manual or programmatic), query multiple LLMs about analysis routes for the Jackson Heart Study or vital statistics data. Document: (a) the prompt used, (b) responses from each model, (c) areas of agreement/disagreement, and (d) your synthesis of the consensus recommendation. Refer to step-by-step tutorial in the lesson PDF.
+\textbf{Item 4 --- Invalidation Log (cumulative across Blocks~B,
+C, and~D, and updated through Section~\ref{sec:7.3}):}
+A structured log of all LLM invalidations encountered during
+Unit~7. Each entry must record: invalidation type (factual,
+logical, normative, or structural), a one-sentence description
+of the failure, the resolution applied, and the section in which
+it occurred. The log must contain at least six entries across
+the full unit (minimum two from Section~\ref{sec:7.2}). If a
+particular invalidation type does not appear in a team's
+experience, this must be explicitly documented with a note on
+what would have caused it to appear.
+
+\textbf{Item 5 --- Race Variable Handling Strategy (Block~C
+deliverable):}
+A written strategy, two to three paragraphs, specifying: (a)~which
+race-related variable(s) will be used in the projection analysis
+and why, (b)~which temporal comparisons are valid within the
+1969--1986 data and which are not, (c)~how the team's LLM queries
+will be structured to mitigate normative invalidation on racial
+disparity claims, and (d)~the updated race variable handling clause
+for the governance protocol.
+
+\textbf{Item 6 --- Methodological Consensus Memo (Block~D
+deliverable):}
+A structured memo containing: (a)~a comparison table with one
+row per projection approach, recording ensemble consensus level
+(High/Medium/Low), key assumptions, major risks, and divergence
+points; (b)~the team's synthesis recommendation with justification;
+(c)~the FOO analysis---which approach generated the most divergent
+ensemble responses and what epistemic difficulty that signals;
+and (d)~a retrospective comparison to the analytic plan designed
+in Section~\ref{sec:3.1}, noting whether the consensus confirms,
+complicates, or challenges the earlier design choices.
 
 %================================================================
-\section{LLMs in Biomedical Research: Building Consensus Pipelines}
+\section{AI Agents for Grant Review and Manuscript Preparation}
 \label{sec:7.3}
 %================================================================
 
-\textbf{Time: 1 hour (Instructional: 30 minutes, Project Work: 30 minutes)}
+\textbf{Time: 2 hours (Instructional: 20 minutes, Activity Work:
+100 minutes)}
 
-Building on the foundations from Sections~\ref{sec:7.1} and~\ref{sec:7.2}, participants will construct a complete consensus analysis pipeline using LLMs to address authentic biomedical research tasks. A step-by-step template is provided that participants can adapt and expand. The session emphasizes that LLMs serve as assistants; humans retain accountability for all outputs, consistent with the ethics framework introduced in Section~\ref{sec:7.1}.
+This session transfers the technical skills developed in
+Section~\ref{sec:7.2} to the most career-relevant applications
+of LLM-assisted research: grant review and manuscript preparation.
+Students work with canonical NIH grant proposals that include
+their actual panel summary statements, providing ground-truth
+verification for ensemble outputs. Students also prepare a
+Specific Aims page for a research proposal using Jackson Heart
+Study (JHS) data, applying the race-consciousness framework from
+Section~\ref{sec:7.1} to the framing of health disparity research.
+
+The governance protocol from Section~\ref{sec:7.1} remains active.
+The special confidentiality concern of Section~\ref{sec:7.3}A is
+emphasized: federal agencies prohibit uploading unpublished
+proposal text to unapproved AI systems for grant review purposes.
+The proposals used here are canonical public examples; students
+are explicitly warned that this constraint applies to any future
+peer review panel work. The invalidation log from
+Section~\ref{sec:7.2} is updated throughout.
+
+\subsection*{Block A --- NIH Grant Review with Ground-Truth
+Comparison (60 minutes)}
+
+Each team selects one canonical NIH grant proposal from the
+provided collection. These proposals are publicly available
+examples accompanied by their actual summary statements from
+review panels.
+
+\textbf{Prompt design (10 min).} Teams design separate prompts
+for each of the five NIH review criteria: Significance,
+Investigator(s), Innovation, Approach, and Environment. Each
+criterion requires different domain reasoning; a single prompt
+for all five produces superficial output. Teams apply
+Eq.~(\ref{eq:nmin}) per criterion, recognizing that Approach
+typically warrants a higher agent count than Environment.
+
+\textbf{Ensemble review (25 min).} Teams run the consensus
+pipeline across all five criteria. The governance protocol is
+active; every ensemble interaction is logged.
+
+\textbf{Comparison analysis (20 min).} Teams compare the
+ensemble's consensus review to the actual panel summary
+statement across all five criteria, recording: consensus score,
+panel score, strengths identified by each, divergence type
+(missing context, conservative bias, detected concern missed
+by panel, domain-norm gap), and agreement level.
+
+\textbf{Critical synthesis (5 min).} Teams identify three
+empirical categories from their comparison data: what the
+ensemble reliably detected, what it missed systematically, and
+what varied case by case. This analysis informs a critical
+reflection on appropriate LLM use in grant preparation.
+
+\subsection*{Block B --- JHS Specific Aims: Ensemble-Assisted
+Drafting (60 minutes)}
+
+The coordinator for JHS activities provides: a specific JHS
+research question, the relevant JHS variables, and two to three
+published JHS papers as grounding context.
+
+\textbf{Prompt construction (10 min).} Teams design a structured
+prompt that injects JHS context as a system prompt. The task
+framing is explicit: not ``write my Specific Aims'' but rather
+``given this JHS research question, this prior work, and these
+three candidate aims, evaluate which aim structure is most
+scientifically defensible and propose the structure with highest
+consensus confidence, flagging any claims about JHS data or
+methods that require independent verification against the
+provided literature.''
+
+\textbf{Ensemble drafting (25 min).} Teams run the FOO pipeline
+with JHS context. Every LLM claim about JHS data, published
+results, or methods is flagged for verification against the
+provided papers and logged in the invalidation log.
+
+\textbf{Human revision and race/ethnicity review (20 min).}
+Teams revise the LLM draft, correcting all logged invalidations.
+A mandatory step: teams explicitly evaluate whether the drafted
+Specific Aims uses race and ethnicity appropriately as social
+determinants of health rather than as biological variables, and
+whether the framing aligns with current NIH policy on race
+and ethnicity in grant applications. Each revision is documented
+in the invalidation log.
+
+\textbf{Disclosure statement finalization (5 min).} The draft
+disclosure statement from Section~\ref{sec:7.1} is revised to
+reflect the actual scope and nature of AI assistance across all
+three sections. Teams select the appropriate disclosure level
+(minimal, standard, or detailed) and produce a finalized
+statement suitable for inclusion in a peer-reviewed publication.
 
 \subsection{Learning Objectives}
 
 \begin{enumerate}
-    \item Construct a multi-model consensus pipeline following a provided template, incorporating prompt design, response collection, and synthesis stages.
-    \item Apply the consensus pipeline to evaluate an NIH grant proposal, producing structured feedback aligned with review criteria.
-    \item Apply the consensus pipeline to draft a Jackson Heart Study manuscript proposal, using LLMs to generate structured content while maintaining human accountability for accuracy and originality.
-    \item Implement verification checkpoints within the pipeline to detect and flag potential invalidation (factual errors, logical inconsistencies, normative violations).
-    \item Document the pipeline with appropriate provenance logging (prompts, model versions, timestamps) to support reproducibility and accountability.
+    \item Design criterion-specific prompts for LLM-assisted NIH
+    grant evaluation; compare ensemble outputs to actual expert
+    panel judgments; and characterize empirical patterns of
+    agreement, divergence, and systematic miss.
+
+    \item Construct an ensemble-assisted Specific Aims draft for
+    a JHS research proposal, verifying all LLM claims against
+    published JHS literature and applying the race-consciousness
+    framework to ensure appropriate framing of health disparity
+    research.
+
+    \item Produce a finalized disclosure statement appropriate for
+    inclusion in a peer-reviewed publication, accurately reflecting
+    the scope of AI assistance and maintaining full human
+    accountability for all outputs.
 \end{enumerate}
 
 \subsection{Assessment Instrument}
 
-\textbf{Deliverable (choose one):}
+\textbf{Item 7 --- NIH Grant Review Analysis (Block~A
+deliverable):}
+A structured comparison document containing: (a)~the comparison
+table across all five NIH criteria with scores, identified
+strengths, divergence types, and agreement levels; (b)~three
+empirical categories---reliable detections, systematic misses,
+and variable outcomes---derived from the comparison data with
+at least one concrete example per category; and (c)~a one-paragraph
+critical reflection on appropriate LLM use in grant preparation,
+grounded in the evidence from the comparison rather than prior
+assumptions.
 
-\textbf{Option A: NIH Grant Evaluation Report.} Using your consensus pipeline, evaluate a provided NIH grant proposal. Produce a technical report that includes: (a) consensus scores for each review criterion, (b) identified strengths and weaknesses with model agreement levels, and (c) a synthesis recommendation with confidence assessment.
+\textbf{Item 8 --- JHS Specific Aims Draft (Block~B deliverable):}
+A draft Specific Aims page produced through the ensemble pipeline
+and revised by the team, with: (a)~all LLM invalidations
+documented in the invalidation log with verification sources
+cited; (b)~a written race/ethnicity review note confirming that
+race and ethnicity are framed as social determinants of health
+and that framing is consistent with NIH policy; and (c)~a brief
+annotation for each aim identifying which elements are
+human-authored and which were substantially shaped by ensemble
+output, consistent with the governance protocol.
 
-\textbf{Option B: JHS Manuscript Proposal Draft.} Using your consensus pipeline and JHS guidelines, produce a draft manuscript proposal. Document: (a) the research question generated/refined by LLMs, (b) the proposed methods with model consensus assessment, and (c) a disclosure statement for AI assistance. Note: Participants do not write proposal text directly; all text is generated via the pipeline and reviewed for accuracy.
+\textbf{Item 9 --- Final Disclosure Statement (Block~B
+deliverable, unit-closing):}
+A single, finalized disclosure statement appropriate for inclusion
+in a methods section or acknowledgments section of a
+peer-reviewed publication. The statement must: name the tools and
+approximate versions used; specify the tasks for which AI
+assistance was employed across the full unit; describe the
+verification procedures applied; and include an explicit
+accountability statement affirming that all claims, analyses,
+and conclusions were reviewed and affirmed by the team, who
+take full responsibility for the work. The statement must be
+consistent with the completed invalidation log.
 
-Refer to step-by-step tutorial in the lesson PDF. Estimated time: 1 hour.
-
-% Required packages (add to your preamble if not already there):
+% Required packages confirmed in DAIR3Config.tex:
 % \usepackage{longtable}
 % \usepackage{booktabs}
 % \usepackage{ragged2e}
@@ -133,82 +623,295 @@ Refer to step-by-step tutorial in the lesson PDF. Estimated time: 1 hour.
     \bottomrule
     \endlastfoot
 
-    % Row 1
-    \textbf{1.\ Ethics of AI Agents}
-    \newline\textbf{(30\%)}
+    % -------------------------------------------------------
+    % Row 1: Invalidation Taxonomy Application (10%)
+    % Maps to Assessment Item 1 (Section 7.1)
+    % -------------------------------------------------------
+    \textbf{1.\ Invalidation Taxonomy Application}
+    \newline\textbf{(10\%)}
     &
-    Accurately distinguishes AI agents from chatbots and clearly explains why
-    agentic workflows expand ethical risk; correctly identifies and explains
-    all four invalidation types with biomedical examples; applies a thorough
-    ethics checklist to an agentic pipeline, addressing all six risk areas
-    (accuracy, authorship, privacy, bias, security, sustainability); produces
-    a complete 5-bullet agent governance plan; drafts a precise, publication-ready
-    disclosure statement aligned with COPE/ICMJE/WAME norms.
+    Correctly identifies all four invalidation types from the
+    presented NCHS scenarios; provides precise, specific
+    justification for each classification that demonstrates deep
+    understanding of why the type applies and not another;
+    proposes a concrete, type-appropriate verification method for
+    each scenario; connects normative invalidation to the
+    race-consciousness framework.
     &
-    Mostly correct distinction between agents and chatbots; identifies most
-    invalidation types with reasonable examples; ethics checklist and
-    governance plan address most risk areas with minor omissions; disclosure
-    statement mostly appropriate.
+    Correctly identifies most invalidation types; justifications
+    are mostly accurate with minor gaps in specificity;
+    verification methods proposed are appropriate with minor
+    omissions; some connection to normative/race-consciousness
+    dimension.
     &
-    Basic understanding of agents vs.\ chatbots; identifies some invalidation
-    types but with limited depth; governance plan incomplete or superficial;
-    disclosure statement present but not well-aligned with publication norms.
+    Identifies some invalidation types correctly but confuses
+    at least one; justifications present but imprecise or
+    incomplete; verification methods generic rather than
+    type-specific; race-consciousness connection absent or
+    superficial.
     &
-    Fails to distinguish agents from chatbots or misunderstands invalidation;
-    ethics checklist or governance plan missing or incorrect; disclosure
-    statement absent or unsuitable for publication.
+    Fails to correctly identify multiple invalidation types or
+    conflates types; justifications missing or incorrect;
+    no meaningful verification strategies proposed; no engagement
+    with normative dimension.
     \\
     \midrule
 
-    % Row 2
-    \textbf{2.\ LLM Consensus Framework}
-    \newline\textbf{(35\%)}
+    % -------------------------------------------------------
+    % Row 2: Research AI Governance Protocol (15%)
+    % Maps to Assessment Item 2 (Section 7.1)
+    % -------------------------------------------------------
+    \textbf{2.\ Research AI Governance Protocol}
+    \newline\textbf{(15\%)}
     &
-    Demonstrates successful environment setup and authenticated API access to
-    at least two LLM providers; clearly documents the prompt used, responses
-    from each model, and areas of agreement/disagreement; produces a
-    well-reasoned synthesis of the consensus recommendation; shows strong
-    understanding of transformer architecture (attention, tokenization, context
-    windows) and how it differs from simple ANNs.
+    All five required components are present, complete, and
+    specific to the NCHS/vital statistics context; provenance
+    logging convention is operationalizable as written; race
+    variable handling clause addresses coding history, temporal
+    comparisons, and normative claim flagging; escalation
+    thresholds are concrete and verifiable; disclosure statement
+    follows the prescribed format and is appropriately specific.
+    Protocol was demonstrably active and updated through
+    Sections~7.2 and~7.3.
     &
-    Environment setup complete with minor issues; documents prompt and model
-    responses with mostly clear comparison; consensus synthesis reasonable
-    but lacking some depth; understands transformer architecture with minor
-    gaps.
+    All five components present; most are specific and
+    operationalizable with minor gaps; race clause addresses
+    most key concerns; some evidence of protocol use in
+    subsequent sections.
     &
-    Environment setup attempted but incomplete; documentation of prompt or
-    model responses is partial; consensus synthesis is superficial or poorly
-    justified; basic understanding of transformer architecture with notable
-    gaps.
+    Most components present but one or more are generic or
+    incomplete; race clause present but does not address
+    temporal inconsistency or normative flagging substantively;
+    limited evidence of protocol use beyond Section~7.1.
     &
-    Environment setup not completed or API access not demonstrated; prompt,
-    responses, or synthesis missing; little to no understanding of transformer
-    architecture or cross-model verification.
+    One or more required components missing; present components
+    are too generic to operationalize; race clause absent
+    or addresses only surface concerns; protocol not
+    demonstrably used in subsequent activities.
     \\
     \midrule
 
-    % Row 3
-    \textbf{3.\ Consensus Pipeline Construction \& Application}
-    \newline\textbf{(35\%)}
+    % -------------------------------------------------------
+    % Row 3: Verified Data Query: Texas Birth Count (15%)
+    % Maps to Assessment Item 3 (Section 7.2 Block B)
+    % -------------------------------------------------------
+    \textbf{3.\ Verified Data Query: Texas Birth Count}
+    \newline\textbf{(15\%)}
     &
-    Constructs a complete, well-documented consensus pipeline incorporating
-    prompt design, response collection, and synthesis stages; correctly applies
-    the pipeline to either the NIH grant evaluation or JHS manuscript proposal;
-    implements verification checkpoints that detect and flag invalidation;
-    provides thorough provenance logging (prompts, model versions, timestamps);
-    maintains clear human accountability for all outputs.
+    Code is executable and produces the correct count; all
+    ambiguities in the data dictionary are identified and
+    resolved with explicit justification; annotations clearly
+    explain each filter field and each disambiguation decision;
+    at least one ensemble invalidation is documented in
+    governance-protocol format; code structure is compatible
+    with Unit~5 reproducible pipeline conventions.
     &
-    Pipeline mostly complete with minor structural gaps; applied to chosen
-    assessment option with reasonable outputs; verification checkpoints
-    present but may lack depth; provenance logging mostly complete.
+    Code is executable and produces a defensible count with
+    minor filter issues; most ambiguities identified and
+    resolved; annotations present for major decisions; at
+    least one invalidation documented.
     &
-    Pipeline partially constructed; application to chosen option is incomplete
-    or outputs are poorly synthesized; verification checkpoints minimal or
-    inconsistently applied; provenance logging sparse.
+    Code is present but contains a filter error or produces
+    an uncorrected count; some ambiguities identified but
+    not all resolved; annotations incomplete; invalidation
+    documentation minimal.
     &
-    Pipeline not constructed or non-functional; chosen assessment option not
-    meaningfully addressed; no verification checkpoints or provenance logging;
-    human accountability not demonstrated.
+    Code is absent, non-executable, or implements an incorrect
+    filter without acknowledgment; ambiguities in the data
+    dictionary not identified; no invalidation documented.
+    \\
+    \midrule
+
+    % -------------------------------------------------------
+    % Row 4: Invalidation Log (10%)
+    % Maps to Assessment Item 4 (Sections 7.2 and 7.3)
+    % -------------------------------------------------------
+    \textbf{4.\ Invalidation Log}
+    \newline\textbf{(10\%)}
+    &
+    Log contains at least six entries across the full unit with
+    at least two from Section~7.2; all four invalidation types
+    are represented or absent types are explicitly accounted for
+    with a note on what would cause each to appear; every entry
+    includes type, description, resolution, and section; log is
+    consistent with the governance protocol format and with the
+    disclosure statement.
+    &
+    Log contains at least six entries; most types represented
+    or accounted for; most entries complete; minor inconsistency
+    with governance protocol format.
+    &
+    Log contains fewer than six entries or multiple entries are
+    incomplete; at least two invalidation types present;
+    some entries lack type, description, or resolution.
+    &
+    Log contains fewer than three entries; entries are incomplete
+    or mis-classified; absent types not accounted for; log
+    is not consistent with governance protocol.
+    \\
+    \midrule
+
+    % -------------------------------------------------------
+    % Row 5: Race Variable Handling Strategy (10%)
+    % Maps to Assessment Item 5 (Section 7.2 Block C)
+    % -------------------------------------------------------
+    \textbf{5.\ Race Variable Handling Strategy}
+    \newline\textbf{(10\%)}
+    &
+    Strategy identifies a specific variable or combination
+    with clear, data-dictionary-grounded justification;
+    specifies which temporal comparisons are valid and which
+    are not, with reference to the documented coding changes;
+    concrete LLM query structure for mitigating normative
+    invalidation is articulated; governance protocol clause
+    is updated and consistent with the strategy.
+    Strategy reflects understanding that race is a social
+    construct whose reification has health consequences.
+    &
+    Variable selection justified with reasonable grounding;
+    temporal validity addressed with minor gaps; normative
+    invalidation mitigation described but not fully
+    operationalized; protocol clause updated.
+    &
+    Variable selected but justification is weak or missing;
+    temporal validity mentioned but not analyzed; normative
+    invalidation acknowledged without concrete mitigation
+    strategy; protocol clause minimally updated.
+    &
+    No specific variable identified or justification absent;
+    temporal coding inconsistency not addressed; no normative
+    invalidation mitigation; race treated as a natural
+    biological category without acknowledgment of the social
+    construct framework.
+    \\
+    \midrule
+
+    % -------------------------------------------------------
+    % Row 6: Methodological Consensus Memo (15%)
+    % Maps to Assessment Item 6 (Section 7.2 Block D)
+    % -------------------------------------------------------
+    \textbf{6.\ Methodological Consensus Memo}
+    \newline\textbf{(15\%)}
+    &
+    Comparison table is complete for all three approaches with
+    accurate, specific entries for consensus level, assumptions,
+    risks, and divergence points; synthesis recommendation is
+    well-reasoned and explicitly connected to the data challenge
+    context; FOO analysis identifies the most epistemically
+    difficult approach and explains why divergence signals this;
+    retrospective comparison to the Unit~3 analytic plan is
+    substantive and either confirms or productively complicates
+    the earlier design.
+    &
+    Table complete with mostly accurate entries; synthesis
+    recommendation reasonable with adequate justification; FOO
+    analysis present but lacks depth; retrospective comparison
+    to Unit~3 present with minor gaps.
+    &
+    Table incomplete or contains inaccuracies for one approach;
+    synthesis recommendation present but weakly justified;
+    FOO analysis minimal; retrospective comparison to Unit~3
+    superficial or absent.
+    &
+    Table missing one or more approaches or largely inaccurate;
+    no synthesis recommendation or recommendation is unjustified;
+    FOO analysis absent; no retrospective connection to Unit~3.
+    \\
+    \midrule
+
+    % -------------------------------------------------------
+    % Row 7: NIH Grant Review Analysis (10%)
+    % Maps to Assessment Item 7 (Section 7.3 Block A)
+    % -------------------------------------------------------
+    \textbf{7.\ NIH Grant Review Analysis}
+    \newline\textbf{(10\%)}
+    &
+    Comparison table covers all five criteria with accurate,
+    evidence-grounded entries; three empirical categories
+    (reliable detections, systematic misses, variable outcomes)
+    are clearly distinguished with at least one concrete example
+    each; critical reflection is grounded in comparison evidence
+    rather than prior assumptions and reaches a nuanced,
+    defensible conclusion about appropriate LLM use in grant
+    preparation.
+    &
+    Table covers all five criteria with mostly accurate entries;
+    three categories identified with examples, some less
+    concrete; reflection grounded in evidence with minor gaps
+    in nuance.
+    &
+    Table covers most criteria; categories identified but
+    blurred or with weak examples; reflection present but
+    relies on assertion more than evidence.
+    &
+    Table incomplete or inaccurate for multiple criteria;
+    categories not meaningfully distinguished; reflection
+    absent or disconnected from comparison evidence.
+    \\
+    \midrule
+
+    % -------------------------------------------------------
+    % Row 8: JHS Specific Aims Draft (10%)
+    % Maps to Assessment Item 8 (Section 7.3 Block B)
+    % -------------------------------------------------------
+    \textbf{8.\ JHS Specific Aims Draft}
+    \newline\textbf{(10\%)}
+    &
+    Draft is complete (opening paragraph, three aims, closing
+    paragraph); all LLM invalidations are logged with
+    verification sources; race/ethnicity review note confirms
+    appropriate social-determinant framing and NIH policy
+    alignment with specific evidence from the draft;
+    annotation accurately distinguishes human-authored from
+    ensemble-shaped elements; draft is scientifically coherent
+    and grounded in the provided JHS literature.
+    &
+    Draft is mostly complete; most invalidations logged with
+    sources; race/ethnicity framing mostly appropriate with
+    minor lapses; annotation present with minor gaps; draft
+    is scientifically reasonable.
+    &
+    Draft has structural gaps (missing aim or section);
+    invalidation log incomplete or sources missing; race/
+    ethnicity framing partially addressed without explicit
+    review note; annotation minimal.
+    &
+    Draft is incomplete or incoherent; invalidation log
+    absent or has fewer than two entries; no race/ethnicity
+    review performed; no annotation distinguishing human
+    from ensemble contributions.
+    \\
+    \midrule
+
+    % -------------------------------------------------------
+    % Row 9: Final Disclosure Statement (5%)
+    % Maps to Assessment Item 9 (Section 7.3 Block B, closing)
+    % -------------------------------------------------------
+    \textbf{9.\ Final Disclosure Statement}
+    \newline\textbf{(5\%)}
+    &
+    Statement names tools and approximate versions; accurately
+    specifies the tasks for which AI assistance was employed
+    across all three sections; describes the verification
+    procedures applied in terms consistent with the
+    invalidation log; includes an explicit accountability
+    statement affirming full human responsibility; is appropriate
+    for inclusion in a peer-reviewed methods or acknowledgments
+    section without revision.
+    &
+    Statement names tools and tasks with minor omissions;
+    verification procedures described at a general level;
+    accountability statement present; suitable for publication
+    with minor editing.
+    &
+    Statement present but omits tools or tasks; verification
+    described only vaguely; accountability statement present
+    but formulaic; would require substantial editing for
+    publication.
+    &
+    Statement absent, or present but does not name tools,
+    tasks, or verification; no accountability statement;
+    not suitable for publication in any form.
     \\
 
     \end{longtable}
