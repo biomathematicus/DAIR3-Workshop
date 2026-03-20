@@ -13,7 +13,7 @@ an SSH key. The recommended method for Linux environments is SSH authentication.
 The following procedure generates an SSH key and configures Git to authenticate
 with GitHub.
 
-\subsubsection{Generate an SSH Key}
+\subsection{Generate an SSH Key}
 
 Create a new SSH key using the \texttt{ed25519} algorithm:
 
@@ -29,7 +29,7 @@ When prompted for the file location, press \texttt{Enter} to accept the default:
 
 Optionally provide a passphrase for additional security.
 
-\subsubsection{Start the SSH Agent}
+\subsection{Start the SSH Agent}
 
 Start the SSH agent and add the newly created key:
 
@@ -38,7 +38,7 @@ eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 \end{lstlisting}
 
-\subsubsection{Add the Public Key to GitHub}
+\subsection{Add the Public Key to GitHub}
 
 Display the public key:
 
@@ -54,7 +54,7 @@ Copy the entire output and add it to GitHub:
 \item Paste the copied key and save
 \end{enumerate}
 
-\subsubsection{Verify the Connection}
+\subsection{Verify the Connection}
 
 Test the authentication:
 

@@ -21,26 +21,28 @@
 
 \section{Introduction}
 
-This chapter documents the configuration of a local Large Language Model
-(LLM) serving infrastructure using Ollama, with specific attention to
-two deployment scenarios: a \emph{single-machine} setup suitable for
-individual development, and a \emph{two-machine} setup that separates
-the application stack from the LLM serving layer. The examples use a
-Dell Precision 7770 workstation as the application host and an NVIDIA
-Spark as the dedicated LLM server, both connected through a university
-network.
+\vs
+\noindent
+\textbf{For students:} this chapter has two parts relevant to you.
+Section~\ref{sec:apikeys} explains how to configure the API keys
+required to run the agent programs in
+\texttt{resources/unit\_7/FOO/}. The Ollama CLI reference in
+Section~\ref{sec:install} covers the commands you will use during
+the LLM unit exercises. You do not need to read the remainder of
+this chapter to complete the data challenge.
+\vs
 
-The choice of Ollama as the serving layer is motivated by three
-properties relevant to the \textsc{Alice} stack. First, Ollama exposes
-an OpenAI-compatible REST~API at \texttt{/v1/chat/completions}, which
-integrates directly with the \texttt{ProviderAdapter} protocol already
-implemented in \textsc{Max}. Second, Ollama has first-class support for
-unified-memory architectures such as the NVIDIA GB10 SoC found in the
-Spark, where CPU and GPU share the same memory pool. Third, Ollama
-manages model lifecycle (loading, eviction, and context
-allocation) through a small set of environment variables that translate
-cleanly to \texttt{systemd} service overrides, preserving production
-parity.
+\vs
+\noindent
+\textbf{For instructors and program staff:} this chapter documents
+the full configuration of the two-machine LLM serving infrastructure
+used by the DAIR\textsuperscript{3} program, covering the Dell
+Precision 7770 application host and the NVIDIA Spark inference
+server. It includes Ollama installation, \texttt{systemd} service
+configuration, network access control, memory budget management,
+single-machine and two-machine deployment modes, connectivity
+testing, and capacity planning.
+\vs
 
 \section{Hardware Inventory}
 \label{sec:hardware}
