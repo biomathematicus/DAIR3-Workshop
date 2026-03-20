@@ -14,13 +14,6 @@ run a program using the simplest text editor available on your system.
 This establishes a fundamental idea: the editor is irrelevant; the
 file is what matters.
 
-\begin{warningbox}[title=Word processors are not text editors]
-Microsoft Word, Google Docs, and LibreOffice Writer save files with
-invisible formatting markup. A Python file saved from one of these
-tools will fail to run. Use only the editors listed in
-Table~\ref{tab:text-editors}.
-\end{warningbox}
-
 \begin{table}[htbp]
 \centering
 \caption{Opening a plain text editor on each operating system.}
@@ -52,6 +45,13 @@ and the program will fail without them. Save the file as
 \texttt{hello.py} in a folder you can find (your Desktop is a good
 choice). Apply the critical step in Table~\ref{tab:text-editors} for
 your operating system before saving.
+
+\begin{warningbox}[title=Word processors are not text editors]
+Microsoft Word, Google Docs, and LibreOffice Writer save files with
+invisible formatting markup. A Python file saved from one of these
+tools will fail to run. Use only the editors listed in
+Table~\ref{tab:text-editors}.
+\end{warningbox}
 
 \begin{lstlisting}[language=Python]
 # This program exemplifies I/O, loops, conditionals, and assignment

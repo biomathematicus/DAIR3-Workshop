@@ -361,12 +361,12 @@ N_{\text{hw}} = \left\lfloor \frac{M_{\text{available}}}{M_{\text{agent}}} \righ
 Table~\ref{tab:model-registry} gives the confirmed model inventory with
 measured status on each platform and approximate memory footprint at
 8,192-token context.
-
+{\scriptsize
 \begin{table}[h]
 \centering
 \caption{Confirmed model inventory and memory footprint at 8K context}
 \label{tab:model-registry}
-\small
+\footnotesize
 \begin{tabular}{llrrrll}
 \toprule
 Model & Ollama name & Params & $M_w$ & $M_{\text{KV}}$ &
@@ -405,7 +405,7 @@ deepseek-v3.1:671b    & ---                & 671 (MoE)  & 404 & 8.0 & 412 &
 \multicolumn{7}{l}{\dag\ ARM64 crash on Spark (Ollama bug); works on x86\_64 Dell.}
 \end{tabular}
 \end{table}
-
+}
 \subsection{Thinking Models and Token Budgets}
 
 Several models in the inventory implement chain-of-thought reasoning
@@ -430,6 +430,49 @@ Thinking...
   ... reasoning text ...
 ...done thinking.
 \end{lstlisting}
+
+\section{Configuring API Keys}
+\label{sec:apikeys}
+
+You will receive an API key for OpenAI and Anthropic during our first session. You can get your own API for free at \href{https://groq.com}{Groq}. You need to create three API key variables following the procedure described below: \texttt{OPENAI\_API\_KEY}, \texttt{ANTHROPIC\_API\_KEY}, \texttt{GROQ\_API\_KEY}. Test the programs located at \texttt{resources/unit\_7/FOO/} in the DAIR3-Workshop repository: \texttt{agentGroq.py}, \texttt{agentGPT.py}, and \texttt{agentClaude.py}.
+
+\vs
+
+On Windows, execute the following three commands one at a time for each API key. The example for \texttt{OPENAI\_API\_KEY} is as follows:
+
+\begin{verbatim}
+setx OPENAI_API_KEY "[sk-... API key]"
+Exit
+echo %OPENAI_API_KEY%
+\end{verbatim}
+
+In the code above, replace \texttt{[sk-... API key]} with your actual API key. The first command sets the environment variable permanently for your user account. The second command closes the Command Prompt to ensure the new environment variable is registered. The third command, run in a new Command Prompt window, prints the stored value to verify it was set correctly.
+
+\vs
+
+On Mac/Linux execute the following three commands one at a time for each API key. The example for \texttt{OPENAI\_API\_KEY} is as follows:
+
+\begin{verbatim}
+echo "export OPENAI_API_KEY='[sk-... API key]'" >> ~/.zshrc
+source ~/.zshrc
+echo $OPENAI_API_KEY
+\end{verbatim}
+
+In the code above, replace \texttt{'[sk-... API key]'} with your actual API key.
+
+\vs
+
+As reported by Bryan Fowler, if you experience errors trying to add your environmental variables in a Mac/Linux, the most likely problem is ownership of the \texttt{\~{}/.zshrc} file. In this case, execute
+
+\begin{verbatim}
+sudo chown $(whoami) ~/.zshrc
+\end{verbatim}
+
+And try to create the environmental variables again.
+
+\vs
+
+As reported by Drew Stephen regarding Mac, ``\textit{apparently it doesn't work on the default c shell but switching to the zsh lets it run}.'' You might need to close and reopen the terminal window from where you started for changes to become effective.
 
 \section{The FOO Framework and Agent Feasibility}
 \label{sec:foo}
@@ -655,7 +698,8 @@ values is committed alongside the script.
 \label{sec:capacity}
 
 A capacity test script (\texttt{capacity\_test.py}) reads the model
-registry from \texttt{connectivity\_config.json}, computes the
+registry from \\
+\texttt{connectivity\_config.json}, computes the
 theoretical $N_{\text{hw}}$ and AFS for each model, and empirically
 validates each installed model by running a single inference call.
 
