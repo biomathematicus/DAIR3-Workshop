@@ -7,92 +7,324 @@
 \textbf{Instructional Time: 3.5 hours} \\
 \textbf{Assessment Time: 1.5 hours}
 
-This unit introduces the foundations of supervised machine learning models, with a focus on interpretability and communicating modeling decisions.
+This unit introduces the foundations of supervised machine learning
+models, with a focus on interpretability and communicating modeling
+decisions. Throughout the unit, the \textbf{iBudget Florida Medicaid
+Waiver Study} (Scientific Report, Volumes~I and~II, available as
+reference documents) serves as the primary worked example. The
+iBudget study evaluated the algorithm that Florida uses to allocate
+support budgets to over 35,000 individuals with developmental
+disabilities, building and comparing eight predictive models using
+real administrative data. It illustrates in a high-stakes, real-world
+setting every concept this unit covers: baseline model construction,
+interpretable feature engineering, multicollinearity diagnostics,
+model comparison, and stakeholder reporting. Volume~II, which extends
+the predictive results into a resource allocation framework, is offered
+as supplemental reading for awareness; students are not expected to
+implement its methods. The parallel task throughout this unit is the
+2026 Data Challenge, in which students apply the same workflow to NCHS
+vital statistics data to project underweight births and infant
+mortality by Texas county.
 
 %================================================================
 \section{Foundations of Predictive Modeling}
 \label{sec:4.1}
 %================================================================
 
-\textbf{Time: 1.5 hours (Instructional: 70 minutes, Assessment: 20 minutes)}
+\textbf{Time: 1.5 hours (Instructional: 70 minutes, Assessment:
+20 minutes)}
 
-\noindent This lesson introduces supervised learning through the workflow that students will use throughout the rest of the unit: selecting a prediction target, choosing features, fitting an interpretable baseline model, and evaluating it on held-out data. The emphasis is on understanding what the model is doing, not only on obtaining a good score.
+\noindent This lesson introduces supervised learning through the
+workflow that students will use throughout the rest of the unit:
+selecting a prediction target, choosing features, fitting an
+interpretable baseline model, and evaluating it on held-out data.
+The emphasis is on understanding what the model is doing, not only
+on obtaining a good score.
 
 \subsection{Learning Objectives}
 
 \begin{enumerate}
-    \item Distinguish supervised learning from other common data analysis tasks, and distinguish regression from classification.
-    \item Build a linear regression model as an interpretable baseline and explain what its coefficients represent.
-    \item Practice the workflow for performing a train-test split, training a model on training data, evaluating it on held-out test data, and understanding how cross-validation works in practice.
-    \item Identify common risks in predictive modeling, including overfitting and data leakage.
+    \item Distinguish supervised learning from other common data
+    analysis tasks, and distinguish regression from classification.
+    \item Before fitting any model, articulate the prediction problem
+    in research terms: name the outcome variable and how it is
+    operationalized in the dataset, identify the unit of analysis,
+    describe the population represented, and state the intended use
+    of the forecast.
+    \item Build a linear regression model as an interpretable baseline
+    and explain what its coefficients represent.
+    \item Practice the workflow for performing a train-test split,
+    training a model on training data, evaluating it on held-out test
+    data, and understanding how cross-validation works in practice.
+    \item Identify common risks in predictive modeling, including
+    overfitting and data leakage.
 \end{enumerate}
+
+\subsection{Instructional Notes}
+
+The iBudget study opens with exactly the framing exercise described
+in Learning Objective~2. Before any model is built, the study
+defines its target variable (annualized support cost per enrolled
+client), its unit of analysis (individual clients in the Florida
+Home and Community-Based Services waiver), and the operational use
+of the prediction: the model output becomes the need estimate that
+informs each client's budget allocation. This framing step is not
+bookkeeping; it determines what a good model means. A model that
+predicts well on average but systematically underpredicts costs for
+the highest-need clients may be statistically respectable and
+operationally harmful at the same time.
+
+For the data challenge, students face an analogous framing decision.
+The outcome could be operationalized as the county-level rate of
+underweight births (a proportion), as the raw count of underweight
+births, or as a binary indicator of whether a county exceeds a
+threshold rate. Each operationalization implies a different model
+family and a different error cost. Students should make this choice
+explicitly and record it before building their baseline.
+
+The iBudget baseline is the frozen 2015 model: a square-root
+transformed linear regression with coefficients fixed at their 2015
+values, applied to FY2024--25 data without recalibration. This is
+a meaningful baseline, not a straw man. It answers the question of
+whether the operational model has drifted from the conditions under
+which it was calibrated. Students should draw the analogy to their
+own baseline choice: what is the simplest defensible model, and
+what question does running it answer?
+
+The 2015 iBudget study reported only in-sample metrics, which the
+2025 re-evaluation identifies as a critical limitation. This is a
+concrete illustration of why the train-test split discipline in
+Learning Objective~4 matters: in-sample fit is not evidence of
+predictive accuracy, and a model evaluated only on its training data
+cannot be trusted to generalize.
 
 \subsection{Assessment Instrument (20 minutes)}
 
-Students will build a baseline linear regression model using the Vital Statistics dataset. They will document the outcome variable, list the features used, report one test-set performance metric such as RMSE or MAE, and write a brief note identifying two ways data leakage or overfitting could occur in this workflow.
+Students will build a baseline linear regression model using the
+Vital Statistics dataset. They will document the outcome variable
+and explain how it is operationalized in the NCHS records, list the
+features used, report one test-set performance metric such as RMSE
+or MAE, and write a brief note identifying two ways data leakage or
+overfitting could occur in this workflow.
 
 %================================================================
 \section{Interpretable Feature Engineering and Pipelines}
 \label{sec:4.2}
 %================================================================
 
-\textbf{Time: 1 hour (Instructional: 40 minutes, Assessment: 20 minutes)}
+\textbf{Time: 1 hour (Instructional: 40 minutes, Assessment:
+20 minutes)}
 
-\noindent This lesson focuses on interpretable feature engineering: creating features that better reflect patterns in the data while preserving interpretability. Students will use plots and domain knowledge to motivate simple transformations, encodings, and interactions, and will organize these steps within a small \verb|sklearn| Pipeline.
+\noindent This lesson focuses on interpretable feature engineering:
+creating features that better reflect patterns in the data while
+preserving interpretability. Students will use plots and domain
+knowledge to motivate simple transformations, encodings, and
+interactions, and will organize these steps within a small
+\verb|sklearn| Pipeline.
 
 \subsection{Learning Objectives}
 
 \begin{enumerate}
-    \item Use visualizations to spot patterns in the data that may motivate feature engineering, such as nonlinearity, thresholds, and group differences.
-    \item Understand when to use simple transformations, interaction terms, and common encoding strategies such as one-hot encoding.
-    \item Build a small preprocessing and modeling Pipeline in \verb|sklearn| and explain how the resulting features affect model interpretability.
+    \item Use visualizations to spot patterns in the data that may
+    motivate feature engineering, such as nonlinearity, thresholds,
+    and group differences.
+    \item Understand when to use simple transformations, interaction
+    terms, and common encoding strategies such as one-hot encoding.
+    \item Build a small preprocessing and modeling Pipeline in
+    \verb|sklearn| and explain how the resulting features affect
+    model interpretability.
 \end{enumerate}
+
+\subsection{Instructional Notes}
+
+The iBudget study's feature engineering process illustrates how
+visualizations motivate transformations. Before any model was fit,
+the study generated box plots of budget utilization by living
+setting, by age group, by race and ethnicity, and by county, and a
+scatter plot of budgeted amount against actual spending. Each of
+these plots revealed a pattern that motivated a feature decision.
+Utilization varied substantially by living setting, which motivated
+including it as a predictor. The budget-versus-spending scatter
+plot revealed a right-skewed outcome distribution, which motivated
+considering log and square-root transformations of the response.
+Students can apply the same discipline: plot the outcome against
+each candidate feature and let the pattern motivate the engineering
+decision.
+
+The iBudget study also illustrates a subtler challenge that
+one-hot encoding alone does not resolve: categorical variables whose
+levels carry different meanings than their labels suggest. The living
+setting variable originally had 22 levels, many of which were
+sparsely populated and clinically overlapping. The study consolidated
+these to 6 levels through a combination of statistical analysis and
+domain judgment. One-hot encoding 22 sparse levels would have
+produced an unstable and uninterpretable set of dummy variables;
+consolidating first, then encoding, produced a feature that was
+both informative and legible. Students should look for analogous
+situations in the NCHS data, particularly in variables with many
+low-frequency categories.
+
+The \verb|sklearn| Pipeline is the right tool for keeping these
+transformations organized and reproducible. A Pipeline ensures that
+preprocessing steps applied during training are applied identically
+to test data, which prevents a common form of data leakage.
 
 \subsection{Assessment Instrument (20 minutes)}
 
-Students will continue working with the Vital Statistics dataset and will add two or three engineered features in a small \verb|sklearn| Pipeline. They will submit the pipeline structure and a short written justification for each added feature, including why it may improve model fit or interpretability.
+Students will continue working with the Vital Statistics dataset
+and will add two or three engineered features in a small
+\verb|sklearn| Pipeline. They will submit the pipeline structure
+and a short written justification for each added feature, including
+why it may improve model fit or interpretability.
 
 %================================================================
-\section{Feature Justification, Multicollinearity, and Model Diagnostics}
+\section{Feature Justification, Multicollinearity, and Model
+Diagnostics}
 \label{sec:4.3}
 %================================================================
 
-\textbf{Time: 1.5 hours (Instructional: 60 minutes, Assessment: 30 minutes)}
+\textbf{Time: 1.5 hours (Instructional: 60 minutes, Assessment:
+30 minutes)}
 
-\noindent Building upon Section~\ref{sec:4.2}, students will learn how to decide whether a feature should remain in a model. The emphasis is on practical diagnostics and justification using correlations, multicollinearity checks, variance inflation factors, coefficient stability, and residual plots.
+\noindent Building upon Section~\ref{sec:4.2}, students will learn
+how to decide whether a feature should remain in a model. The
+emphasis is on practical diagnostics and justification using
+correlations, multicollinearity checks, variance inflation factors,
+coefficient stability, and residual plots.
 
 \subsection{Learning Objectives}
 
 \begin{enumerate}
-    \item Use simple quantitative tools such as Pearson and Spearman correlation, multiple $R^2$, and variance inflation factor to identify useful, redundant, or unstable features and to recognize multicollinearity.
-    \item Use residual plots and side-by-side model comparison to assess whether added complexity is justified.
-    \item Explain why a feature was kept, transformed, or removed based on predictive performance, interpretability, and stability.
+    \item Use simple quantitative tools such as Pearson and Spearman
+    correlation, multiple $R^2$, and variance inflation factor to
+    identify useful, redundant, or unstable features and to recognize
+    multicollinearity.
+    \item Use residual plots and side-by-side model comparison to
+    assess whether added complexity is justified.
+    \item Explain why a feature was kept, transformed, or removed
+    based on predictive performance, interpretability, and stability.
+    \item Examine model performance separately for meaningful
+    subgroups, such as geographic region or demographic category, and
+    recognize when a model that performs well overall may perform
+    unevenly across the population it serves.
 \end{enumerate}
+
+\subsection{Instructional Notes}
+
+Multicollinearity is not a pathology to be feared; it is information
+about the feature space that must be understood and managed. The
+iBudget study screened candidate features using mutual information
+with permutation baseline correction across five consecutive fiscal
+years, then checked pairwise redundancy using Spearman rank
+correlation for continuous-continuous pairs and bias-corrected
+Cram\'er's~$V$ for categorical pairs. VIF screening followed for
+the final candidate set. This sequence is exactly the workflow
+Learning Objective~1 describes; students can treat Chapter~5 of
+the iBudget Volume~I as a methodological reference.
+
+The iBudget study also illustrates why comparing more than two
+models is scientifically honest. The study evaluated eight models
+under a common protocol: an 80/20 train-test split with 10-fold
+cross-validation, all metrics computed on the held-out test set.
+The comparison included OLS re-estimation, a Generalized Linear
+Model with a Gamma distribution (which handles the positive,
+right-skewed distribution of support costs more appropriately than
+OLS), robust regression using Huber M-estimation, ridge regression
+to manage multicollinearity among correlated assessment items, and
+a random forest as the accuracy ceiling. Students do not need to
+implement all of these, but they should understand why a family
+of models exists: each alternative addresses a specific limitation
+of the OLS baseline that can be diagnosed from residual plots and
+distributional checks. A fitted-vs-residual plot that shows a
+funnel pattern suggests heteroscedasticity; a GLM or weighted least
+squares may be warranted. A pattern of large positive residuals for
+the highest-cost observations suggests the outcome distribution
+needs a transformation or a different family entirely.
+
+Learning Objective~4 reflects a lesson that emerges clearly from
+the iBudget subgroup analysis. A model that predicts overall support
+costs accurately can still systematically underpredict costs for the
+highest-need clients, whose budgets have the largest consequences
+for service access. In the data challenge context, a county-level
+model that performs well on average across Texas may perform poorly
+on rural or border counties, which are precisely the populations
+where targeted public health intervention is most important. Subgroup
+performance is not optional reporting; it is part of what the model
+works means.
 
 \subsection{Assessment Instrument (30 minutes)}
 
-Students will compare two candidate models, such as a baseline model and an expanded feature-engineered model. They will decide which model they would keep and justify the decision using at least three pieces of evidence drawn from performance metrics, multicollinearity checks, coefficient stability, or residual diagnostics.
+Students will compare two candidate models, such as a baseline
+model and an expanded feature-engineered model. They will decide
+which model they would keep and justify the decision using at least
+three pieces of evidence drawn from performance metrics,
+multicollinearity checks, coefficient stability, or residual
+diagnostics. The justification should also include one observation
+about whether the preferred model's performance is consistent across
+at least one meaningful subgroup in the data.
 
 %================================================================
 \section{Model Reporting and Stakeholder Communication}
 \label{sec:4.4}
 %================================================================
 
-\textbf{Time: 1 hour (Instructional: 30 minutes, Assessment: 30 minutes)}
+\textbf{Time: 1 hour (Instructional: 30 minutes, Assessment:
+30 minutes)}
 
-\noindent This lesson focuses on communicating model performance and design decisions to external stakeholders. The goal is to turn the analytic work from Section~\ref{sec:4.3} into a clear written summary that reports model results responsibly and in a form that aligns with the broader reporting expectations introduced earlier in the curriculum.
+\noindent This lesson focuses on communicating model performance
+and design decisions to external stakeholders. The goal is to turn
+the analytic work from Section~\ref{sec:4.3} into a clear written
+summary that reports model results responsibly and in a form that
+aligns with the broader reporting expectations introduced earlier
+in the curriculum.
 
 \subsection{Learning Objectives}
 
 \begin{enumerate}
-    \item Understand how to report and compare interpretable predictive models using appropriate regression metrics such as MSE, RMSE, and MAE.
-    \item Summarize model design choices, strengths, and limitations in language appropriate for a non-technical audience.
-    \item Practice connecting model reporting to broader ideas of transparency and reproducibility, including the spirit of TRIPOD-style reporting.
+    \item Understand how to report and compare interpretable
+    predictive models using appropriate regression metrics such as
+    MSE, RMSE, and MAE.
+    \item Summarize model design choices, strengths, and limitations
+    in language appropriate for a non-technical audience.
+    \item Practice connecting model reporting to broader ideas of
+    transparency and reproducibility, including the spirit of
+    TRIPOD-style reporting.
 \end{enumerate}
+
+\subsection{Instructional Notes}
+
+The iBudget study's reporting structure is a professional example of
+the TRIPOD spirit applied to an administrative prediction problem.
+Each model in the comparison follows an identical chapter template:
+specification, overall performance metrics, accuracy bands,
+cross-validation results, subgroup analysis, variance and stability
+metrics, and implementation considerations. This structure means
+that any reader can navigate to any modeling decision and find it
+documented. Nothing is left to be inferred from code. Students do
+not need to produce a report of that scope, but they can use it as
+a reference for what complete documentation looks like and what
+questions a careful reader will ask.
+
+The report produced in this section will be carried forward. Unit~6
+asks whether estimates are stable across data sources and time
+periods, and a model report that does not specify its outcome
+operationalization or validation strategy cannot be meaningfully
+compared to estimates from other sources. Unit~7 subjects the report
+to LLM ensemble critique, and a report with gaps will produce
+ensemble outputs that are difficult to verify. Writing the report
+well here has direct consequences for the quality of work in both
+subsequent units.
 
 \subsection{Assessment Instrument (30 minutes)}
 
-Students will write a short report for a stakeholder describing their final model. The report should identify the prediction target, summarize the features included, report one or two performance metrics, and explain at least one important limitation or caveat in plain language.
+Students will write a short report for a stakeholder describing
+their final model. The report should identify the prediction target,
+summarize the features included, report one or two performance
+metrics, and explain at least one important limitation or caveat in
+plain language. The report should also include one sentence
+connecting the model to the data challenge: what specific projection
+will this model contribute to the final analysis, and for which
+population or geography?
 
 % Required packages (add to your preamble if not already there):
 % \usepackage{longtable}
@@ -146,17 +378,21 @@ Students will write a short report for a stakeholder describing their final mode
     Clearly distinguishes supervised vs.\ unsupervised, regression
     vs.\ classification; correctly performs a train-test split, trains an
     interpretable baseline model, evaluates it on held-out data, and explains
-    how cross-validation works; demonstrates strong understanding of
-    overfitting and data leakage.
+    how cross-validation works; articulates the prediction problem in research
+    terms before fitting; demonstrates strong understanding of overfitting
+    and data leakage.
     &
     Good workflow with minor errors in reasoning or terminology;
+    prediction framing present but partially developed;
     overfitting/data leakage described but not deeply.
     &
     Workflow partially correct; inconsistent understanding of splits,
-    evaluation metrics, or model fitting.
+    evaluation metrics, or model fitting; prediction framing absent
+    or generic.
     &
     Incorrect or incomplete workflow; poor understanding of model evaluation,
-    overfitting, or data leakage.
+    overfitting, or data leakage; no research framing of the prediction
+    problem.
     \\
     \midrule
 
@@ -188,16 +424,18 @@ Students will write a short report for a stakeholder describing their final mode
     multiple $R^2$, variance inflation factor, and residual diagnostics;
     correctly identifies multicollinearity concerns; compares models
     thoughtfully and gives a clear, evidence-based rationale for keeping the
-    preferred model.
+    preferred model; includes at least one subgroup performance observation
+    with genuine analytical content.
     &
     Most diagnostics applied correctly; model comparison reasonable but with
-    minor gaps in interpretation or justification.
+    minor gaps in interpretation or justification; subgroup observation
+    present with adequate reasoning.
     &
     Partial or inconsistent use of diagnostics; model choice weakly
-    justified.
+    justified; subgroup observation absent or superficial.
     &
     Incorrect or missing diagnostic evidence; model choice unsupported or
-    inconsistent with results.
+    inconsistent with results; no subgroup analysis.
     \\
     \midrule
 
@@ -208,16 +446,16 @@ Students will write a short report for a stakeholder describing their final mode
     Accurately computes and interprets regression metrics such as MSE, RMSE,
     and MAE; report is clear, well-structured, and communicates model design
     decisions, performance, and limitations appropriately for the intended
-    audience.
+    audience; includes a specific, meaningful connection to the data challenge.
     &
     Metrics computed correctly with minor errors; report mostly clear and
-    appropriately framed.
+    appropriately framed; data challenge connection present but general.
     &
     Metrics included but inconsistently computed or interpreted; explanation
-    limited or too technical.
+    limited or too technical; data challenge connection absent or formulaic.
     &
     Metrics missing or incorrect; report unclear, incomplete, or not aligned
-    with results.
+    with results; no connection to the data challenge.
     \\
     \midrule
 

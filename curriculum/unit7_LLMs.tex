@@ -199,6 +199,17 @@ activities. Blocks~B, C, and~D form an analytical chain: outputs
 from each block feed the next, and their collective products are
 load-bearing components of the final data challenge report.
 
+Students enter this session with a completed model report from
+Unit~4, which documents a predictive model for the data
+challenge outcome (underweight birth rate or infant mortality
+rate by Texas county) including the feature selection memo,
+model comparison table, residual diagnostics, and limitations
+section. This report is the primary document the LLM ensemble
+will be asked to interrogate. The governance protocol
+from Section~\ref{sec:7.1} is active from the start of this
+session; every ensemble interaction concerning the Unit~4
+model is logged in the invalidation log.
+
 The governing framework is the \emph{Flaws-of-Others} (FOO)
 algorithm, in which multiple agents independently produce outputs,
 each critiques the others' responses, and a harmonizer synthesizes
@@ -294,6 +305,21 @@ implements the correct filter with comments explaining each
 disambiguation decision. This code is a candidate component of
 the reproducible pipeline developed in Unit~5.
 
+\textbf{Model report critique (15 min).} Each team submits
+their Unit~4 model report to the ensemble and prompts it to
+identify any claim in the methods section that is (a)~not
+reproducible from the written description alone, (b)~in
+tension with a stated limitation, or (c)~likely to require
+verification against the NCHS data dictionary. Teams record
+each flagged claim in the invalidation log with an invalidation
+type classification from Section~\ref{sec:7.1}. For each
+factual or structural invalidation identified, teams verify
+the ensemble's critique against the Unit~4 model code before
+accepting or rejecting it. Teams that find no invalidations
+in their Unit~4 report should examine whether the ensemble
+is producing false-negative outputs (a structural invalidation
+of the ensemble itself) and document their reasoning.
+
 \subsection*{Block C --- Race Variable Temporal Inconsistency
 (15 minutes)}
 
@@ -314,42 +340,26 @@ normative and structural invalidation, and (3)~students update the
 race variable handling clause in their governance protocol based
 on what they actually encountered.
 
-\subsection*{Block D --- Methodological Consensus on Projection
-Approach (30 minutes)}
+\subsection*{Block D --- Methodological Decision Support
+(60 minutes)}
 
-The data challenge requires projections to 2030. The NCHS data
-ends in 1986. The analytical chain is NCHS $\rightarrow$ SEER
-$\rightarrow$ SEDAC. Teams query the ensemble on three candidate
-modeling strategies:
-
-\textbf{Approach~A --- County-level linear trend extrapolation.}
-Fit a per-county linear trend to the 1969--1986 NCHS baseline;
-extend to 2030 using SEER population denominators. Required
-assumption: secular trend is approximately stationary over the
-extrapolation period. Key risk: 44-year extrapolation from a
-17-year baseline with no structural break correction.
-
-\textbf{Approach~B --- Multilevel model with county random effects.}
-Fit a mixed model with county random effects on the NCHS period;
-use SEER projections as denominators for forward extrapolation.
-Required assumption: random-effect variance structure is stationary
-beyond the data period. Key risk: partial pooling stabilizes sparse
-counties but does not improve extrapolation validity.
-
-\textbf{Approach~C --- Age-period-cohort model linked to SEER
-denominators.} Separate age, period, and cohort effects with SEER
-denominators applied at each projection step. Required assumption:
-identification constraints are defensible and explicitly justified.
-Key risk: APC models are not uniquely identified without additional
-constraints; the choice of constraint is a substantive modeling
-decision.
-
-For each approach, the ensemble is asked to evaluate: (a)~the key
-assumptions required for validity, (b)~the identifiability
-conditions, (c)~the major failure modes in this specific
-extrapolation context, and (d)~published precedent for this type
-of vital statistics projection. Teams apply the $n_{\min}$ value
-computed for methodological judgment tasks.
+Teams use the ensemble to interrogate the model family choice
+documented in their Unit~4 report. The core prompt pattern
+is: present the ensemble with the Unit~4 feature set, the
+outcome distribution description, and the model comparison
+table, then ask it to (a)~identify which alternative model
+from the comparison was most appropriate given the stated
+distributional properties of the outcome, and (b)~identify
+any model family that was not evaluated in the Unit~4
+comparison but would be worth considering given the data
+structure. Teams apply Eq.~(\ref{eq:nmin}) to determine
+the appropriate ensemble size for this task. Every ensemble
+recommendation is logged and verified against the Unit~4
+model diagnostics before being accepted. If the ensemble
+recommends a model family that the student already
+evaluated and rejected in Unit~4, teams document whether
+the ensemble's reasoning accounts for the diagnostic
+evidence that motivated the rejection.
 
 \subsection{Learning Objectives}
 
@@ -575,8 +585,12 @@ assistance was employed across the full unit; describe the
 verification procedures applied; and include an explicit
 accountability statement affirming that all claims, analyses,
 and conclusions were reviewed and affirmed by the team, who
-take full responsibility for the work. The statement must be
-consistent with the completed invalidation log.
+take full responsibility for the work. The statement must also
+specify whether and how the LLM ensemble was used to review or
+revise the predictive model report produced in Unit~4, including
+a description of the verification procedure applied to ensemble
+critiques of that report. The statement must be consistent with
+the completed invalidation log.
 
 % Required packages confirmed in DAIR3Config.tex:
 % \usepackage{longtable}
@@ -692,11 +706,11 @@ consistent with the completed invalidation log.
     \midrule
 
     % -------------------------------------------------------
-    % Row 3: Verified Data Query: Texas Birth Count (15%)
+    % Row 3: Verified Data Query: Texas Birth Count (10%)
     % Maps to Assessment Item 3 (Section 7.2 Block B)
     % -------------------------------------------------------
     \textbf{3.\ Verified Data Query: Texas Birth Count}
-    \newline\textbf{(15\%)}
+    \newline\textbf{(10\%)}
     &
     Code is executable and produces the correct count; all
     ambiguities in the data dictionary are identified and
@@ -723,10 +737,44 @@ consistent with the completed invalidation log.
     \midrule
 
     % -------------------------------------------------------
-    % Row 4: Invalidation Log (10%)
+    % Row 4: Unit 4 Model Report Critique (10%)
+    % Maps to Section 7.2 Block B model report critique sub-task
+    % -------------------------------------------------------
+    \textbf{4.\ Unit~4 Model Report Critique}
+    \newline\textbf{(10\%)}
+    &
+    Ensemble critique is elicited with a well-designed prompt that
+    directs attention to reproducibility, internal consistency, and
+    data dictionary alignment; all flagged claims are classified
+    by invalidation type with specific justification; each
+    factual or structural invalidation is verified against
+    Unit~4 code before acceptance; at least one false-negative
+    or false-positive ensemble output is identified and
+    documented in governance-protocol format; the invalidation
+    log is updated consistently.
+    &
+    Critique prompt is adequate; most flagged claims classified
+    by type with reasonable justification; verification performed
+    for most invalidations; invalidation log updated.
+    &
+    Critique prompt is generic or insufficiently specific to
+    the Unit~4 report; classification of flagged claims
+    by type is partial or inconsistent; verification
+    performed for some invalidations; log updated
+    incompletely.
+    &
+    No critique prompt submitted, or critique not connected
+    to the Unit~4 report; no classification by invalidation
+    type; no verification against Unit~4 code; invalidation
+    log not updated.
+    \\
+    \midrule
+
+    % -------------------------------------------------------
+    % Row 5: Invalidation Log (10%)
     % Maps to Assessment Item 4 (Sections 7.2 and 7.3)
     % -------------------------------------------------------
-    \textbf{4.\ Invalidation Log}
+    \textbf{5.\ Invalidation Log}
     \newline\textbf{(10\%)}
     &
     Log contains at least six entries across the full unit with
@@ -752,10 +800,10 @@ consistent with the completed invalidation log.
     \midrule
 
     % -------------------------------------------------------
-    % Row 5: Race Variable Handling Strategy (10%)
+    % Row 6: Race Variable Handling Strategy (10%)
     % Maps to Assessment Item 5 (Section 7.2 Block C)
     % -------------------------------------------------------
-    \textbf{5.\ Race Variable Handling Strategy}
+    \textbf{6.\ Race Variable Handling Strategy}
     \newline\textbf{(10\%)}
     &
     Strategy identifies a specific variable or combination
@@ -787,10 +835,10 @@ consistent with the completed invalidation log.
     \midrule
 
     % -------------------------------------------------------
-    % Row 6: Methodological Consensus Memo (15%)
+    % Row 7: Methodological Consensus Memo (15%)
     % Maps to Assessment Item 6 (Section 7.2 Block D)
     % -------------------------------------------------------
-    \textbf{6.\ Methodological Consensus Memo}
+    \textbf{7.\ Methodological Consensus Memo}
     \newline\textbf{(15\%)}
     &
     Comparison table is complete for all three approaches with
@@ -820,10 +868,10 @@ consistent with the completed invalidation log.
     \midrule
 
     % -------------------------------------------------------
-    % Row 7: NIH Grant Review Analysis (10%)
+    % Row 8: NIH Grant Review Analysis (10%)
     % Maps to Assessment Item 7 (Section 7.3 Block A)
     % -------------------------------------------------------
-    \textbf{7.\ NIH Grant Review Analysis}
+    \textbf{8.\ NIH Grant Review Analysis}
     \newline\textbf{(10\%)}
     &
     Comparison table covers all five criteria with accurate,
@@ -851,10 +899,10 @@ consistent with the completed invalidation log.
     \midrule
 
     % -------------------------------------------------------
-    % Row 8: JHS Specific Aims Draft (10%)
+    % Row 9: JHS Specific Aims Draft (10%)
     % Maps to Assessment Item 8 (Section 7.3 Block B)
     % -------------------------------------------------------
-    \textbf{8.\ JHS Specific Aims Draft}
+    \textbf{9.\ JHS Specific Aims Draft}
     \newline\textbf{(10\%)}
     &
     Draft is complete (opening paragraph, three aims, closing
@@ -884,10 +932,10 @@ consistent with the completed invalidation log.
     \midrule
 
     % -------------------------------------------------------
-    % Row 9: Final Disclosure Statement (5%)
+    % Row 10: Final Disclosure Statement (5%)
     % Maps to Assessment Item 9 (Section 7.3 Block B, closing)
     % -------------------------------------------------------
-    \textbf{9.\ Final Disclosure Statement}
+    \textbf{10.\ Final Disclosure Statement}
     \newline\textbf{(5\%)}
     &
     Statement names tools and approximate versions; accurately
