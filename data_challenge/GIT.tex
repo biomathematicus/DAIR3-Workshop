@@ -17,13 +17,13 @@ with GitHub.
 
 Create a new SSH key using the \texttt{ed25519} algorithm:
 
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily,escapeinside={(*@}{@*)}]
 ssh-keygen -t ed25519 -C "your_email@example.com"
 \end{lstlisting}
 
 When prompted for the file location, press \texttt{Enter} to accept the default:
 
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily,escapeinside={(*@}{@*)}]
 ~/.ssh/id_ed25519
 \end{lstlisting}
 
@@ -33,7 +33,7 @@ Optionally provide a passphrase for additional security.
 
 Start the SSH agent and add the newly created key:
 
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily,escapeinside={(*@}{@*)}]
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 \end{lstlisting}
@@ -42,7 +42,7 @@ ssh-add ~/.ssh/id_ed25519
 
 Display the public key:
 
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily,escapeinside={(*@}{@*)}]
 cat ~/.ssh/id_ed25519.pub
 \end{lstlisting}
 
@@ -58,13 +58,13 @@ Copy the entire output and add it to GitHub:
 
 Test the authentication:
 
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily,escapeinside={(*@}{@*)}]
 ssh -T git@github.com
 \end{lstlisting}
 
 A successful configuration will display a message similar to:
 
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily,escapeinside={(*@}{@*)}]
 Hi <username>! You've successfully authenticated.
 \end{lstlisting}
 
@@ -72,7 +72,7 @@ Hi <username>! You've successfully authenticated.
 
 Repositories must be cloned using the SSH URL:
 
-\begin{lstlisting}[basicstyle=\footnotesize\ttfamily]
+\begin{lstlisting}[basicstyle=\footnotesize\ttfamily,escapeinside={(*@}{@*)}]
 git clone git@github.com:USER/REPOSITORY.git
 \end{lstlisting}
 
@@ -96,13 +96,13 @@ To open Git Bash, right-click on the Desktop or any folder in File Explorer and 
 
 SSH authentication relies on a public/private key pair. The private key remains on your machine; the public key is uploaded to GitHub. Generate a new key pair using the \texttt{ed25519} algorithm, which is modern, compact, and recommended over the older RSA default:
 
-\begin{lstlisting}[style=bashstyle, caption={Generate an ed25519 SSH key pair}]
+\begin{lstlisting}[style=bashstyle, caption={Generate an ed25519 SSH key pair},escapeinside={(*@}{@*)}]
 ssh-keygen -t ed25519 -C "your_email@example.com"
 \end{lstlisting}
 
 Replace \texttt{your\_email@example.com} with the address associated with your GitHub account. When prompted for a file location, press \textbf{Enter} to accept the default path:
 
-\begin{lstlisting}[style=windowsStyle, caption={Default key location on Windows}]
+\begin{lstlisting}[style=windowsStyle, caption={Default key location on Windows},escapeinside={(*@}{@*)}]
 C:\Users\YourName\.ssh\id_ed25519
 \end{lstlisting}
 
@@ -114,7 +114,7 @@ The SSH agent is a background process that holds decrypted private keys in memor
 
 Start the agent and add your private key with the following two commands:
 
-\begin{lstlisting}[style=bashstyle, caption={Start the SSH agent and add the private key}]
+\begin{lstlisting}[style=bashstyle, caption={Start the SSH agent and add the private key},escapeinside={(*@}{@*)}]
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/id_ed25519
 \end{lstlisting}
@@ -124,7 +124,7 @@ The first command launches the agent and sets the necessary environment variable
 \begin{tipbox}{Automating Agent Startup}
 The commands above must be repeated every time you open a new Git Bash session. To avoid this, you can add the following lines to your \texttt{\textasciitilde/.bashrc} file so that the agent starts automatically:
 
-\begin{lstlisting}[style=bashstyle]
+\begin{lstlisting}[style=bashstyle,escapeinside={(*@}{@*)}]
 eval "$(ssh-agent -s)" > /dev/null 2>&1
 ssh-add ~/.ssh/id_ed25519 2>/dev/null
 \end{lstlisting}
@@ -136,7 +136,7 @@ Open or create \texttt{\textasciitilde/.bashrc} in a text editor, paste the two 
 
 GitHub needs your \emph{public} key to verify your identity. Display its contents with:
 
-\begin{lstlisting}[style=bashstyle, caption={Display the public key}]
+\begin{lstlisting}[style=bashstyle, caption={Display the public key},escapeinside={(*@}{@*)}]
 cat ~/.ssh/id_ed25519.pub
 \end{lstlisting}
 
@@ -157,13 +157,13 @@ Next, navigate to GitHub in your browser and follow these steps:
 
 Before using SSH for any repository operations, confirm that GitHub can authenticate your key:
 
-\begin{lstlisting}[style=bashstyle, caption={Test the SSH connection to GitHub}]
+\begin{lstlisting}[style=bashstyle, caption={Test the SSH connection to GitHub},escapeinside={(*@}{@*)}]
 ssh -T git@github.com
 \end{lstlisting}
 
 On the first connection, SSH will display a fingerprint and ask whether you trust the host. Type \texttt{yes} and press \textbf{Enter}. If authentication succeeds, you will see a message similar to:
 
-\begin{lstlisting}[style=inlineStyle, caption={Expected response from GitHub}]
+\begin{lstlisting}[style=inlineStyle, caption={Expected response from GitHub},escapeinside={(*@}{@*)}]
 Hi username! You've successfully authenticated, but GitHub does
 not provide shell access.
 \end{lstlisting}
@@ -174,7 +174,7 @@ If instead you receive a \texttt{Permission denied} error, verify that the agent
 
 Once authentication is confirmed, clone repositories using the SSH remote URL:
 
-\begin{lstlisting}[style=bashstyle, caption={Clone a repository over SSH}]
+\begin{lstlisting}[style=bashstyle, caption={Clone a repository over SSH},escapeinside={(*@}{@*)}]
 git clone git@github.com:USER/REPOSITORY.git
 \end{lstlisting}
 
@@ -183,7 +183,7 @@ Replace \texttt{USER} with the repository owner's GitHub username and \texttt{RE
 \begin{warningbox}{Use the SSH Remote URL, Not HTTPS}
 The SSH remote URL begins with \texttt{git@github.com:} and ends with \texttt{.git}. It is \emph{not} the same as the HTTPS URL, which begins with \texttt{https://github.com/}. If you clone or push using the HTTPS form after configuring SSH authentication, Git will still prompt you for a GitHub username and password (or personal access token). Always verify the remote URL with \texttt{git remote -v} and update it if necessary:
 
-\begin{lstlisting}[style=bashstyle]
+\begin{lstlisting}[style=bashstyle,escapeinside={(*@}{@*)}]
 git remote set-url origin git@github.com:USER/REPOSITORY.git
 \end{lstlisting}
 \end{warningbox}
@@ -236,8 +236,8 @@ A single local repository can maintain simultaneous connections to any
 number of remote repositories. This is useful when a project must be
 mirrored across an organisation account and a personal account (for
 example, keeping the \ProjectName{} workshop materials synchronised
-between the \texttt{DAIR3} organisation and the personal
-\texttt{biomathematicus} GitHub account).
+between the \texttt{\ProjectName{}} organisation and the personal
+\texttt{YourVeryOwnGitHubAccount} GitHub account).
 
 \subsubsection{Concepts}
 
@@ -258,45 +258,45 @@ remote entirely different names without consequence.
 
 Before adding a remote, confirm what is already registered:
 
-\begin{lstlisting}[style=bashstyle, caption={List all remotes and their URLs}]
+\begin{lstlisting}[style=bashstyle, caption={List all remotes and their URLs},escapeinside={(*@}{@*)}]
 git remote -v
 \end{lstlisting}
 
 Each remote appears twice, once for fetch and once for push. A freshly
 cloned repository typically shows only \texttt{origin}:
 
-\begin{lstlisting}[style=inlineStyle]
-origin  https://github.com/DAIR3/DAIR3-Workshop.git (fetch)
-origin  https://github.com/DAIR3/DAIR3-Workshop.git (push)
+\begin{lstlisting}[style=inlineStyle,escapeinside={(*@}{@*)}]
+origin  (*@\ProjectGit@*).git (fetch)
+origin  (*@\ProjectGit@*).git (push)
 \end{lstlisting}
 
 \subsubsection{Adding a Second Remote}
 
 Register an additional remote with \texttt{git remote add}:
 
-\begin{lstlisting}[style=bashstyle, caption={Register a personal mirror remote (Linux / WSL)}]
-git remote add biomathematicus \
-    https://github.com/biomathematicus/DAIR3-Workshop.git
+\begin{lstlisting}[style=bashstyle, caption={Register a personal mirror remote (Linux / WSL)},escapeinside={(*@}{@*)}]
+git remote add YourVeryOwnGitHubAccount \
+    (*@\ProjectGit@*).git
 \end{lstlisting}
 
-\begin{lstlisting}[style=psstyle, caption={Register a personal mirror remote (PowerShell)}]
-git remote add biomathematicus `
-    https://github.com/biomathematicus/DAIR3-Workshop.git
+\begin{lstlisting}[style=psstyle, caption={Register a personal mirror remote (PowerShell)},escapeinside={(*@}{@*)}]
+git remote add YourVeryOwnGitHubAccount `
+    (*@\ProjectGit@*).git
 \end{lstlisting}
 
 Verify the result:
 
-\begin{lstlisting}[style=bashstyle]
+\begin{lstlisting}[style=bashstyle,escapeinside={(*@}{@*)}]
 git remote -v
 \end{lstlisting}
 
 The output should now show four lines:
 
-\begin{lstlisting}[style=inlineStyle]
-biomathematicus  https://github.com/biomathematicus/DAIR3-Workshop.git (fetch)
-biomathematicus  https://github.com/biomathematicus/DAIR3-Workshop.git (push)
-origin           https://github.com/DAIR3/DAIR3-Workshop.git (fetch)
-origin           https://github.com/DAIR3/DAIR3-Workshop.git (push)
+\begin{lstlisting}[style=inlineStyle,escapeinside={(*@}{@*)}]
+YourVeryOwnGitHubAccount  https://github.com/YourVeryOwnGitHubAccount/(*@\ProjectName@*).git (fetch)
+YourVeryOwnGitHubAccount  https://github.com/YourVeryOwnGitHubAccount/(*@\ProjectName@*).git (push)
+origin           (*@\ProjectGit@*).git (fetch)
+origin           (*@\ProjectGit@*).git (push)
 \end{lstlisting}
 
 \subsubsection{Pushing to Each Remote}
@@ -305,9 +305,9 @@ With two remotes registered, every push must be issued explicitly to
 each destination. Git does not push to multiple remotes automatically
 unless a push target is configured:
 
-\begin{lstlisting}[style=bashstyle, caption={Push to both remotes explicitly}]
+\begin{lstlisting}[style=bashstyle, caption={Push to both remotes explicitly},escapeinside={(*@}{@*)}]
 git push origin HEAD
-git push biomathematicus HEAD
+git push YourVeryOwnGitHubAccount HEAD
 \end{lstlisting}
 
 \texttt{HEAD} resolves to the current branch, which is the safest form
@@ -320,26 +320,26 @@ In automated scripts it is good practice to verify that a remote is
 registered before attempting to push to it, so a missing remote produces
 a clear diagnostic rather than a fatal error.
 
-\begin{lstlisting}[style=bashstyle, caption={Guard a push with a remote existence check (bash)}]
-if git remote get-url biomathematicus > /dev/null 2>&1; then
-    git push biomathematicus HEAD
+\begin{lstlisting}[style=bashstyle, caption={Guard a push with a remote existence check (bash)},escapeinside={(*@}{@*)}]
+if git remote get-url YourVeryOwnGitHubAccount > /dev/null 2>&1; then
+    git push YourVeryOwnGitHubAccount HEAD
 else
-    echo "Remote 'biomathematicus' not configured."
+    echo "Remote 'YourVeryOwnGitHubAccount' not configured."
     echo "Register it with:"
-    echo "  git remote add biomathematicus \
-https://github.com/biomathematicus/DAIR3-Workshop.git"
+    echo "  git remote add YourVeryOwnGitHubAccount \
+https://github.com/YourVeryOwnGitHubAccount/(*@\ProjectName@*).git"
 fi
 \end{lstlisting}
 
-\begin{lstlisting}[style=psstyle, caption={Guard a push with a remote existence check (PowerShell / batch)}]
-git remote get-url biomathematicus >nul 2>&1
+\begin{lstlisting}[style=psstyle, caption={Guard a push with a remote existence check (PowerShell / batch)},escapeinside={(*@}{@*)}]
+git remote get-url YourVeryOwnGitHubAccount >nul 2>&1
 if errorlevel 1 (
-    echo Remote 'biomathematicus' not configured.
+    echo Remote 'YourVeryOwnGitHubAccount' not configured.
     echo Register it with:
-    echo   git remote add biomathematicus ^
-        https://github.com/biomathematicus/DAIR3-Workshop.git
+    echo   git remote add YourVeryOwnGitHubAccount ^
+        https://github.com/YourVeryOwnGitHubAccount/(*@\ProjectName@*).git
 ) else (
-    git push biomathematicus HEAD
+    git push YourVeryOwnGitHubAccount HEAD
 )
 \end{lstlisting}
 
@@ -383,13 +383,13 @@ simultaneously, so that a single \texttt{git push origin HEAD} reaches
 both destinations. This is convenient but reduces visibility; a failure
 on the second URL can be easy to miss in the output.
 
-\begin{lstlisting}[style=bashstyle, caption={Add a second push URL to the origin remote}]
+\begin{lstlisting}[style=bashstyle, caption={Add a second push URL to the origin remote},escapeinside={(*@}{@*)}]
 # The first push URL is already set from the clone.
 # Add the personal repo as an additional push target:
 git remote set-url --add --push origin \
-    https://github.com/DAIR3/DAIR3-Workshop.git
+    (*@\ProjectGit@*).git
 git remote set-url --add --push origin \
-    https://github.com/biomathematicus/DAIR3-Workshop.git
+    https://github.com/YourVeryOwnGitHubAccount/(*@\ProjectName@*).git
 \end{lstlisting}
 
 \begin{warningbox}

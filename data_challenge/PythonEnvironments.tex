@@ -3,10 +3,6 @@
 \label{ch:python-environments}
 %================================================================
 
-\section{Python Virtual Environments}
-\label{sec:venvs}
-% ============================================================
-
 Before we write any scripts, we need to understand \emph{what} those scripts
 will manage: Python virtual environments.
 
@@ -14,7 +10,7 @@ will manage: Python virtual environments.
 Imagine you have two projects on your computer. Project~A uses version~1.5
 of a library called \texttt{numpy}; Project~B requires version~2.0. If you
 install both versions globally, they will conflict. The last one installed
-wins, and one of your projects will break.
+wins, and one of your projects could break.
 
 \textbf{The Solution: Virtual Environments}.
 A \textbf{virtual environment} (or \emph{venv}) is an isolated copy of
@@ -26,34 +22,38 @@ bubble around your project.
   \item Each project gets its own environment
   \item Packages installed in one environment cannot interfere with another
   \item You can recreate an environment exactly from a list of packages
-        (\texttt{requirements.txt})
   \item Deleting an environment is safe and clean
 \end{itemize}
 
-\subsection{Creating a Virtual Environment}
+We will cover two strategies for managing environments: The traditional 
+approach via \texttt{pip} and an emerging trend called \texttt{uv}.
 
+%---------------------------------------------------------
+\section{Traditional Package Management: \texttt{pip}}
+\label{sec:venvs}
+%---------------------------------------------------------
 \subsubsection{Windows (CMD or PowerShell)}
 
-\begin{lstlisting}[style=windowsStyle, caption={Creating a venv on Windows}]
+\begin{lstlisting}[style=windowsStyle, caption={Creating a venv on Windows},escapeinside={(*@}{@*)}]
 :: Navigate to your project folder
-cd C:\Projects\DAIR3
+cd C:\Projects\(*@\ProjectName@*)
 
 :: Create the environment (Python must be installed globally)
-python -m venv C:\penv\DAIR3
+python -m venv C:\penv\(*@\ProjectName@*)
 \end{lstlisting}
 
 \subsubsection{Linux / WSL}
 
-\begin{lstlisting}[style=linuxStyle, caption={Creating a venv on Linux/WSL}]
+\begin{lstlisting}[style=linuxStyle, caption={Creating a venv on Linux/WSL},escapeinside={(*@}{@*)}]
 # Navigate to your project folder
-cd ~/DAIR3
+cd ~/(*@\ProjectName@*)
 
 # Create the environment
-python3 -m venv ~/penv/DAIR3
+python3 -m venv ~/penv/(*@\ProjectName@*)
 \end{lstlisting}
 
-In both cases, \texttt{C:\textbackslash penv\textbackslash DAIR3} or
-\texttt{\textasciitilde/penv/DAIR3} is where the environment will be stored.
+In both cases, \texttt{C:\textbackslash penv\textbackslash \ProjectName{}} or
+\texttt{\textasciitilde/penv/\ProjectName{}} is where the environment will be stored.
 Keeping all environments in a single folder (\texttt{penv} stands for
 ``Python environments'') makes them easy to find and manage.
 
@@ -65,24 +65,24 @@ venv, not the global ones.
 
 \subsubsection{Windows}
 
-\begin{lstlisting}[style=windowsStyle, caption={Activating a venv on Windows}]
-C:\penv\DAIR3\Scripts\activate.bat
+\begin{lstlisting}[style=windowsStyle, caption={Activating a venv on Windows},escapeinside={(*@}{@*)}]
+C:\penv\(*@\ProjectName@*)\Scripts\activate.bat
 \end{lstlisting}
 
 After activation, your prompt will change to show the environment name:
-\begin{lstlisting}[style=windowsStyle]
-(DAIR3) C:\Projects\DAIR3>
+\begin{lstlisting}[style=windowsStyle,escapeinside={(*@}{@*)}]
+((*@\ProjectName@*)) C:\Projects\(*@\ProjectName@*)>
 \end{lstlisting}
 
 \subsubsection{Linux / WSL}
 
-\begin{lstlisting}[style=linuxStyle, caption={Activating a venv on Linux/WSL}]
-source ~/penv/DAIR3/bin/activate
+\begin{lstlisting}[style=linuxStyle, caption={Activating a venv on Linux/WSL},escapeinside={(*@}{@*)}]
+source ~/penv/(*@\ProjectName@*)/bin/activate
 \end{lstlisting}
 
 After activation:
-\begin{lstlisting}[style=linuxStyle]
-(DAIR3) drg@machine:~/DAIR3$
+\begin{lstlisting}[style=linuxStyle,escapeinside={(*@}{@*)}]
+((*@\ProjectName@*)) drg@machine:~/(*@\ProjectName@*)$
 \end{lstlisting}
 
 \begin{warningbox}
@@ -95,20 +95,20 @@ is explained in detail in Section~\ref{sec:source-vs-execute}.
 Once the environment is active, use \texttt{pip} to install packages.
 The syntax is identical on both platforms:
 
-\begin{lstlisting}[style=inlineStyle, caption={Installing packages with pip}]
+\begin{lstlisting}[style=inlineStyle, caption={Installing packages with pip},escapeinside={(*@}{@*)}]
 pip install numpy pandas matplotlib openai langchain
 \end{lstlisting}
 
 To save a list of all installed packages (so you or a colleague can
 recreate the environment later):
 
-\begin{lstlisting}[style=inlineStyle]
+\begin{lstlisting}[style=inlineStyle,escapeinside={(*@}{@*)}]
 pip freeze > requirements.txt
 \end{lstlisting}
 
 To recreate an environment from such a list:
 
-\begin{lstlisting}[style=inlineStyle]
+\begin{lstlisting}[style=inlineStyle,escapeinside={(*@}{@*)}]
 pip install -r requirements.txt
 \end{lstlisting}
 
@@ -117,14 +117,14 @@ pip install -r requirements.txt
 To leave the environment and return to the global shell (identical on
 both platforms):
 
-\begin{lstlisting}[style=inlineStyle]
+\begin{lstlisting}[style=inlineStyle,escapeinside={(*@}{@*)}]
 deactivate
 \end{lstlisting}
 
 \subsection{Installing the \ProjectName{} Required Libraries}
-\label{sec:dair3-libraries}
+\label{sec:project-libraries}
 
-With the DAIR3 environment active, install the required libraries for
+With the \ProjectName{} environment active, install the required libraries for
 the data challenge:
 
 \begin{verbatim}
@@ -155,7 +155,7 @@ python -c "import numpy, pandas, matplotlib, scipy, jupyter; print('OK')"
 \end{itemize}
 The LLM agent programs (\texttt{agentGroq.py}, \texttt{agentGPT.py},
 \texttt{agentClaude.py}) are located at
-\texttt{resources/unit\_7/FOO/} in the DAIR3-Workshop repository.
+\texttt{resources/unit\_7/FOO/} in the \ProjectName{} repository.
 Running them requires API keys configured in
 Chapter~\ref{ch:ollama-infrastructure}.
 \vs
@@ -230,7 +230,7 @@ principal advantages over the traditional toolchain are:
 
 \subsubsection{Windows (PowerShell)}
 
-\begin{lstlisting}[style=windowsStyle, caption={Installing \texttt{uv} on Windows}]
+\begin{lstlisting}[style=windowsStyle, caption={Installing \texttt{uv} on Windows},escapeinside={(*@}{@*)}]
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 \end{lstlisting}
 
@@ -239,20 +239,20 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 adds itself to your user \texttt{PATH} automatically. Close and reopen
 your terminal, then verify:
 
-\begin{lstlisting}[style=windowsStyle]
+\begin{lstlisting}[style=windowsStyle,escapeinside={(*@}{@*)}]
 uv --version
 \end{lstlisting}
 
 \subsubsection{Linux / WSL}
 
-\begin{lstlisting}[style=linuxStyle, caption={Installing \texttt{uv} on Linux/WSL}]
+\begin{lstlisting}[style=linuxStyle, caption={Installing \texttt{uv} on Linux/WSL},escapeinside={(*@}{@*)}]
 curl -LsSf https://astral.sh/uv/install.sh | sh
 \end{lstlisting}
 
 \texttt{uv} installs to \texttt{\textasciitilde/.local/bin}. Reload
 your shell configuration and verify:
 
-\begin{lstlisting}[style=linuxStyle]
+\begin{lstlisting}[style=linuxStyle,escapeinside={(*@}{@*)}]
 source ~/.bashrc
 uv --version
 \end{lstlisting}
@@ -267,12 +267,12 @@ unchanged.
 
 \subsubsection{Creating an Environment}
 
-\begin{lstlisting}[style=windowsStyle, caption={Creating a uv-managed environment (Windows)}]
-uv venv C:\uvenv\DAIR3 --python 3.12
+\begin{lstlisting}[style=windowsStyle, caption={Creating a uv-managed environment (Windows)},escapeinside={(*@}{@*)}]
+uv venv C:\uvenv\(*@\ProjectName@*) --python 3.12
 \end{lstlisting}
 
-\begin{lstlisting}[style=linuxStyle, caption={Creating a uv-managed environment (Linux/WSL)}]
-uv venv ~/uvenv/DAIR3 --python 3.12
+\begin{lstlisting}[style=linuxStyle, caption={Creating a uv-managed environment (Linux/WSL)},escapeinside={(*@}{@*)}]
+uv venv ~/uvenv/(*@\ProjectName@*) --python 3.12
 \end{lstlisting}
 
 The \texttt{--python} flag specifies the Python version. If that
@@ -283,12 +283,12 @@ install it automatically.
 
 Activation is identical to a standard venv:
 
-\begin{lstlisting}[style=windowsStyle]
-C:\uvenv\DAIR3\Scripts\activate.bat
+\begin{lstlisting}[style=windowsStyle,escapeinside={(*@}{@*)}]
+C:\uvenv\(*@\ProjectName@*)\Scripts\activate.bat
 \end{lstlisting}
 
-\begin{lstlisting}[style=linuxStyle]
-source ~/uvenv/DAIR3/bin/activate
+\begin{lstlisting}[style=linuxStyle,escapeinside={(*@}{@*)}]
+source ~/uvenv/(*@\ProjectName@*)/bin/activate
 \end{lstlisting}
 
 \subsubsection{Installing Packages}
@@ -296,7 +296,7 @@ source ~/uvenv/DAIR3/bin/activate
 Within an activated environment, \texttt{uv pip install} replaces
 \texttt{pip install}:
 
-\begin{lstlisting}[style=inlineStyle, caption={Installing packages with uv}]
+\begin{lstlisting}[style=inlineStyle, caption={Installing packages with uv},escapeinside={(*@}{@*)}]
 uv pip install numpy pandas matplotlib
 \end{lstlisting}
 
@@ -306,7 +306,7 @@ For projects that will be shared or reproduced, \texttt{uv} works best
 with a \texttt{pyproject.toml} file in the project root that declares
 dependencies explicitly:
 
-\begin{lstlisting}[style=inlineStyle, caption={Minimal \texttt{pyproject.toml}}]
+\begin{lstlisting}[style=inlineStyle, caption={Minimal \texttt{pyproject.toml}},escapeinside={(*@}{@*)}]
 [project]
 name = "my-project"
 version = "0.1.0"
@@ -321,7 +321,7 @@ dependencies = [
 With this file present, a single command installs all dependencies and
 generates the lockfile:
 
-\begin{lstlisting}[style=inlineStyle]
+\begin{lstlisting}[style=inlineStyle,escapeinside={(*@}{@*)}]
 uv sync
 \end{lstlisting}
 
@@ -337,6 +337,7 @@ repository. Do not commit the environment folder itself. Add it to
 \texttt{.gitignore}.
 \end{infobox}
 
+\newpage
 \subsection{\texttt{requirements.txt} vs.\ \texttt{uv.lock}}
 
 \begin{table}[h]
@@ -381,7 +382,7 @@ activate them automatically. The goal is to create two scripts:
   \item \textbf{\texttt{ActivateEnv}}: A reusable script that accepts
         two parameters (environment name and project directory), activates
         the environment, and opens VS Code.
-  \item \textbf{\texttt{DAIR3}}: A project-specific one-liner that calls
+  \item \textbf{\texttt{\ProjectName}}: A project-specific one-liner that calls
         \texttt{ActivateEnv} with the correct parameters for the \ProjectName{}
         project.
 \end{enumerate}
@@ -395,7 +396,7 @@ The Windows version, \texttt{ActivateEnv.bat}, is stored in
 It accepts two parameters: \texttt{\%1} (environment name) and
 \texttt{\%2} (project directory).
 
-\begin{lstlisting}[style=windowsStyle, basicstyle=\footnotesize\ttfamily, caption={\texttt{ActivateEnv.bat}: Reusable environment launcher (Windows)}]
+\begin{lstlisting}[style=windowsStyle, basicstyle=\footnotesize\ttfamily, caption={\texttt{ActivateEnv.bat}: Reusable environment launcher (Windows)},escapeinside={(*@}{@*)}]
 @echo off
 setlocal
 
@@ -458,18 +459,18 @@ Key Windows-specific elements:
   \item \texttt{goto :eof} jumps to the end of the file (a clean exit).
 \end{itemize}
 
-\subsubsection{DAIR3.bat}
+\subsubsection{\ProjectName{}.bat}
 
 This file lives in the \ProjectName{} project directory. It simply calls
 \texttt{ActivateEnv.bat} with the correct arguments:
 
-\begin{lstlisting}[style=windowsStyle, caption={\texttt{DAIR3.bat}: Project launcher (Windows)}]
-ActivateEnv DAIR3 "C:\Projects\DAIR3"
+\begin{lstlisting}[style=windowsStyle, caption={\texttt{\ProjectName{}.bat}: Project launcher (Windows)},escapeinside={(*@}{@*)}]
+ActivateEnv (*@\ProjectName@*) "C:\Projects\(*@\ProjectName@*)"
 \end{lstlisting}
 
 Because \texttt{C:\textbackslash penv} is on the system \texttt{PATH},
 Windows finds \texttt{ActivateEnv.bat} automatically. You can run
-\texttt{DAIR3.bat} by double-clicking it or typing \texttt{DAIR3} in any
+\texttt{\ProjectName{}.bat} by double-clicking it or typing \texttt{\ProjectName{}} in any
 CMD window.
 
 \subsection{The Linux Solution: Shell Scripts}
@@ -481,7 +482,7 @@ A Linux shell script is a plain text file containing Bash commands. Every
 script should begin with a \textbf{shebang line}, a special first line that
 tells the system which interpreter to use:
 
-\begin{lstlisting}[style=linuxStyle]
+\begin{lstlisting}[style=linuxStyle,escapeinside={(*@}{@*)}]
 #!/bin/bash
 \end{lstlisting}
 
@@ -490,7 +491,7 @@ Parameters passed to a script are accessed as \texttt{\$1}, \texttt{\$2},
 
 \subsubsection{ActivateEnv.sh}
 
-\begin{lstlisting}[style=linuxStyle, basicstyle=\footnotesize\ttfamily, caption={\texttt{ActivateEnv.sh}: Reusable environment launcher (Linux/WSL)}]
+\begin{lstlisting}[style=linuxStyle, basicstyle=\footnotesize\ttfamily, caption={\texttt{ActivateEnv.sh}: Reusable environment launcher (Linux/WSL)},escapeinside={(*@}{@*)}]
 #!/bin/bash
 # ActivateEnv.sh
 # Usage: source ~/penv/ActivateEnv.sh <ENV_NAME> <PROJECT_DIR>
@@ -553,15 +554,15 @@ Notice several differences from the Windows version:
         the next section).
 \end{itemize}
 
-\subsubsection{DAIR3.sh}
+\subsubsection{\ProjectName{}.sh}
 
-\begin{lstlisting}[style=linuxStyle, caption={\texttt{DAIR3.sh}: Project launcher (Linux/WSL)}]
+\begin{lstlisting}[style=linuxStyle, caption={\texttt{\ProjectName.sh}: Project launcher (Linux/WSL)},escapeinside={(*@}{@*)}]
 #!/bin/bash
-# DAIR3.sh
-# Usage: source ~/DAIR3/DAIR3.sh
-# Launches the DAIR3 project environment.
+# (*@\ProjectName@*).sh
+# Usage: source ~/(*@\ProjectName@*)/(*@\ProjectName@*).sh
+# Launches the (*@\ProjectName@*) project environment.
 
-source ~/penv/ActivateEnv.sh DAIR3 "$HOME/DAIR3"
+source ~/penv/ActivateEnv.sh (*@\ProjectName@*) "$HOME/(*@\ProjectName@*)"
 \end{lstlisting}
 
 \subsection{Making a Script Executable}
@@ -570,9 +571,9 @@ source ~/penv/ActivateEnv.sh DAIR3 "$HOME/DAIR3"
 On Linux, creating a file does not automatically make it executable. You
 must grant execute permission using the \texttt{chmod} command:
 
-\begin{lstlisting}[style=linuxStyle]
+\begin{lstlisting}[style=linuxStyle,escapeinside={(*@}{@*)}]
 chmod +x ~/penv/ActivateEnv.sh
-chmod +x ~/DAIR3/DAIR3.sh
+chmod +x ~/(*@\ProjectName@*)/(*@\ProjectName@*).sh
 \end{lstlisting}
 
 \texttt{chmod} stands for \emph{change mode}. The \texttt{+x} flag adds
@@ -587,7 +588,7 @@ On Windows, you added \texttt{C:\textbackslash penv} to the system
 anywhere. On Linux, you do the same by editing your shell configuration
 file.
 
-\begin{lstlisting}[style=linuxStyle, caption={Adding \textasciitilde/penv to PATH in \textasciitilde/.bashrc}]
+\begin{lstlisting}[style=linuxStyle, caption={Adding \textasciitilde/penv to PATH in \textasciitilde/.bashrc},escapeinside={(*@}{@*)}]
 # Open your bashrc file in a text editor
 nano ~/.bashrc
 
@@ -631,7 +632,7 @@ Two behaviours distinguish \texttt{ActivateUVEnv} from its
 Store this file in \texttt{C:\textbackslash uvenv} and add that folder
 to the system \texttt{PATH}.
 
-\begin{lstlisting}[style=windowsStyle, basicstyle=\footnotesize\ttfamily, caption={\texttt{ActivateUVEnv.bat}: uv environment launcher (Windows)}]
+\begin{lstlisting}[style=windowsStyle, basicstyle=\footnotesize\ttfamily, caption={\texttt{ActivateUVEnv.bat}: uv environment launcher (Windows)},escapeinside={(*@}{@*)}]
 @echo off
 setlocal
 
@@ -685,7 +686,7 @@ endlocal
 
 Usage is identical in form to \texttt{ActivateEnv.bat}:
 
-\begin{lstlisting}[style=windowsStyle]
+\begin{lstlisting}[style=windowsStyle,escapeinside={(*@}{@*)}]
 ActivateUVEnv lunar "C:\Dropbox\Research\Lunar\python"
 ActivateUVEnv forecasting "C:\Projects\forecasting"
 \end{lstlisting}
@@ -696,7 +697,7 @@ Add the following function to \texttt{\textasciitilde/.bashrc}. Like
 its \texttt{pip}-based counterpart, it runs in the current shell so
 that activation and directory changes persist in your session.
 
-\begin{lstlisting}[style=linuxStyle, basicstyle=\footnotesize\ttfamily, caption={\texttt{ActivateUVEnv()} shell function for \textasciitilde/.bashrc}]
+\begin{lstlisting}[style=linuxStyle, basicstyle=\footnotesize\ttfamily, caption={\texttt{ActivateUVEnv()} shell function for \textasciitilde/.bashrc},escapeinside={(*@}{@*)}]
 # -------------------------------------------------------
 # ActivateUVEnv: Activate a uv-managed venv and open VS Code
 # Usage: ActivateUVEnv <ENV_NAME> <PROJECT_DIR>
@@ -748,13 +749,13 @@ ActivateUVEnv() {
 
 Reload \texttt{.bashrc} after saving:
 
-\begin{lstlisting}[style=linuxStyle]
+\begin{lstlisting}[style=linuxStyle,escapeinside={(*@}{@*)}]
 source ~/.bashrc
 \end{lstlisting}
 
 Then call it from any directory:
 
-\begin{lstlisting}[style=linuxStyle]
+\begin{lstlisting}[style=linuxStyle,escapeinside={(*@}{@*)}]
 ActivateUVEnv lunar "$HOME/Research/Lunar/python"
 \end{lstlisting}
 
@@ -788,19 +789,19 @@ runs a script \emph{in the current shell}: no child is created. Every
 command executes as if you had typed it directly at the prompt. This means:
 
 \begin{itemize}
-  \item \texttt{source ~/penv/DAIR3/bin/activate} activates the venv
+  \item \texttt{source ~/penv/\ProjectName{}/bin/activate} activates the venv
         in \emph{your} terminal.
   \item \texttt{cd} changes \emph{your} working directory.
   \item Variables set by the script persist in \emph{your} session.
 \end{itemize}
 
-\begin{lstlisting}[style=linuxStyle]
+\begin{lstlisting}[style=linuxStyle,escapeinside={(*@}{@*)}]
 # These two are equivalent:
-source ActivateEnv.sh DAIR3 ~/DAIR3
-. ActivateEnv.sh DAIR3 ~/DAIR3
+source ActivateEnv.sh (*@\ProjectName@*) ~/(*@\ProjectName@*)
+. ActivateEnv.sh (*@\ProjectName@*) ~/(*@\ProjectName@*)
 
 # This does NOT work for venv activation:
-./ActivateEnv.sh DAIR3 ~/DAIR3    # child shell; changes are lost
+./ActivateEnv.sh (*@\ProjectName@*) ~/(*@\ProjectName@*)    # child shell; changes are lost
 \end{lstlisting}
 
 \subsection{The Windows Parallel}
@@ -842,7 +843,7 @@ automatically runs in the current session without requiring
 
 Add the following to the bottom of \texttt{\textasciitilde/.bashrc}:
 
-\begin{lstlisting}[style=linuxStyle, basicstyle=\footnotesize\ttfamily, caption={Shell function version of \texttt{ActivateEnv} in \textasciitilde/.bashrc}]
+\begin{lstlisting}[style=linuxStyle, basicstyle=\footnotesize\ttfamily, caption={Shell function version of \texttt{ActivateEnv} in \textasciitilde/.bashrc},escapeinside={(*@}{@*)}]
 # -------------------------------------------------------
 # ActivateEnv: Activate a Python venv and open VS Code
 # Usage: ActivateEnv <ENV_NAME> <PROJECT_DIR>
@@ -887,18 +888,18 @@ ActivateEnv() {
 The keyword \texttt{local} restricts variables to the function's scope,
 so they do not pollute your shell session.
 
-\subsection{Defining the DAIR3 Function}
+\subsection{Defining the \ProjectName{} Function}
 
 Now add a one-line function that calls \texttt{ActivateEnv} for the
 \ProjectName{} project:
 
-\begin{lstlisting}[style=linuxStyle, caption={Project-specific function for DAIR3 in \textasciitilde/.bashrc}]
+\begin{lstlisting}[style=linuxStyle, caption={Project-specific function for \ProjectName{} in \textasciitilde/.bashrc},escapeinside={(*@}{@*)}]
 # -------------------------------------------------------
-# DAIR3: Launch the DAIR3 project environment
-# Usage: DAIR3
+# (*@\ProjectName@*): Launch the (*@\ProjectName@*) project environment
+# Usage: (*@\ProjectName@*)
 # -------------------------------------------------------
-DAIR3() {
-    ActivateEnv "DAIR3" "$HOME/DAIR3"
+(*@\ProjectName@*)() {
+    ActivateEnv "(*@\ProjectName@*)" "$HOME/(*@\ProjectName@*)"
 }
 \end{lstlisting}
 
@@ -906,14 +907,14 @@ DAIR3() {
 
 After editing \texttt{\textasciitilde/.bashrc}, reload it:
 
-\begin{lstlisting}[style=linuxStyle]
+\begin{lstlisting}[style=linuxStyle,escapeinside={(*@}{@*)}]
 source ~/.bashrc
 \end{lstlisting}
 
 Now, from \emph{any directory}, simply type:
 
-\begin{lstlisting}[style=linuxStyle]
-DAIR3
+\begin{lstlisting}[style=linuxStyle,escapeinside={(*@}{@*)}]
+(*@\ProjectName@*)
 \end{lstlisting}
 
 The shell will change to your \ProjectName{} project directory, activate the
@@ -949,20 +950,20 @@ Figure~\ref{fig:workflow} summarizes the complete workflow on each platform.
 \textbf{Step} & \textbf{Windows} & \textbf{Linux / WSL} \\
 \midrule
 Create venv
-  & \texttt{python -m venv C:\textbackslash penv\textbackslash DAIR3}
-  & \texttt{python3 -m venv \textasciitilde/penv/DAIR3} \\[4pt]
+  & \texttt{python -m venv C:\textbackslash penv\textbackslash \ProjectName}
+  & \texttt{python3 -m venv \textasciitilde/penv/\ProjectName} \\[4pt]
 Reusable launcher
   & \texttt{ActivateEnv.bat} in \texttt{C:\textbackslash penv}
   & Function \texttt{ActivateEnv()} in \texttt{\textasciitilde/.bashrc} \\[4pt]
 Project launcher
-  & \texttt{DAIR3.bat} in project folder
-  & Function \texttt{DAIR3()} in \texttt{\textasciitilde/.bashrc} \\[4pt]
+  & \texttt{\ProjectName{}.bat} in project folder
+  & Function \texttt{\ProjectName{}()} in \texttt{\textasciitilde/.bashrc} \\[4pt]
 Make available globally
   & Add \texttt{C:\textbackslash penv} to system PATH
   & Functions in \texttt{.bashrc} are always available \\[4pt]
 Launch project
-  & Type \texttt{DAIR3} in any CMD window
-  & Type \texttt{DAIR3} in any terminal \\[4pt]
+  & Type \texttt{\ProjectName{}} in any CMD window
+  & Type \texttt{\ProjectName{}} in any terminal \\[4pt]
 Result
   & venv active, VS Code opens in project folder
   & venv active, VS Code opens in project folder (WSL mode) \\
@@ -972,11 +973,11 @@ Result
 
 \subsection{The Full WSL Experience}
 
-When you type \texttt{DAIR3} in your WSL terminal:
+When you type \texttt{\ProjectName{}} in your WSL terminal:
 
 \begin{enumerate}
-  \item Bash looks up \texttt{DAIR3} in its list of known functions.
-  \item \texttt{DAIR3()} calls \texttt{ActivateEnv "DAIR3" "\$HOME/DAIR3"}.
+  \item Bash looks up \texttt{\ProjectName{}} in its list of known functions.
+  \item \texttt{\ProjectName{}()} calls \texttt{ActivateEnv "\ProjectName{}" "\$HOME/\ProjectName{}"}.
   \item \texttt{ActivateEnv()} changes to the project directory.
   \item The virtual environment is activated in your current shell.
   \item \texttt{code .} launches VS Code with the WSL extension,
@@ -1129,7 +1130,7 @@ environments and automating project setup across Windows and Linux:
         \texttt{pip}-managed environments; \texttt{ActivateUVEnv.bat}
         and the \texttt{ActivateUVEnv()} shell function for
         \texttt{uv}-managed environments) and project-specific
-        one-liners (\texttt{DAIR3.bat}, \texttt{DAIR3.sh}) that
+        one-liners (\texttt{\ProjectName{}.bat}, \texttt{\ProjectName{}.sh}) that
         activate the correct environment, change to the project
         directory, and launch VS Code in a single invocation.
   \item \textbf{Level~2 scripting}: shell functions defined in
@@ -1146,7 +1147,7 @@ environments and automating project setup across Windows and Linux:
         \texttt{exit} for error handling.
 \end{itemize}
 
-The \texttt{DAIR3} command you built in this chapter is a small but
+The \texttt{\ProjectName{}} command you built in this chapter is a small but
 meaningful example of a broader principle: the CLI lets you encode your
 workflow into repeatable, shareable, and improvable scripts. Every
 tedious setup step you eliminate today is cognitive load freed up for the

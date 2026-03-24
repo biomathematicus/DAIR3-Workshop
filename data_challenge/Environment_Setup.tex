@@ -4,7 +4,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 This chapter walks through the installation of all software required
-for the DAIR\textsuperscript{3} program. Work through the Required
+for the \ProjectName{} project. Work through the required
 sections in order before the first session. Optional sections can be
 completed at any time. The instructions are written primarily for
 Windows but include equivalent steps for macOS and Linux throughout.
@@ -21,7 +21,7 @@ this chapter.
 \section{Required: Install Python}\label{sec:python}
 %================================================================
 
-\href{https://www.python.org/downloads/}{https://www.python.org/downloads/}. Install any recent Python version. Go to your downloads and double click on the install file to start installation. By default the Python installer for Windows places its executables in the user's AppData directory, so that it doesn't require administrative permissions. This works for most scenarios. If you're the only user on the system, you might want to place Python in a higher-level directory (e.g. \texttt{C:\textbackslash Python} or \texttt{/usr/local/bin}) to have a shorter path to the binaries (sometimes you will need that). Depending on your preferences, either select ``\textit{Install Now}'' or ``\textit{Customized installation}'' (my preference). Please make sure you select ``\textit{Add python.exe to path}''; this will save you a few headaches later.
+Install any recent Python version from \href{https://www.python.org/downloads/}{https://www.python.org/downloads/}. Go to your downloads and double click on the install file to start installation. By default the Python installer for Windows places its executables in the user's AppData directory, so that it doesn't require administrative permissions. This works for most scenarios. If you're the only user on the system, you might want to place Python in a higher-level directory (e.g. \texttt{C:\textbackslash Python} or \texttt{/usr/local/bin}) to have a shorter path to the binaries (sometimes you will need that). Depending on your preferences, either select ``\textit{Install Now}'' or ``\textit{Customized installation}'' (my preference). Please make sure you select ``\textit{Add python.exe to path}''; this will save you a few headaches later.
 
 \begin{figure}[htbp]
 	\centering
@@ -53,6 +53,71 @@ For PC: If you did not add \texttt{python.exe} to the PATH during installation, 
 \vs
 
 For Mac: If you did not ensure Python was added to your system's PATH during installation, you can manually do so using the following steps on a Mac. After installation is complete, open the Terminal application. Enter the command \texttt{which python3} or \texttt{which python} to find the path to the installed Python binary. Copy that path. Then open your shell configuration file in a text editor. This will typically be \texttt{\~{}/.zshrc} if you are using the Zsh shell (default on newer versions of macOS) or \texttt{\~{}/.bash\_profile} if you are using Bash. Add the line \texttt{export PATH="/path/to/python:\$PATH"}, replacing \texttt{/path/to/python} with the path you copied. Save the file and close the editor. In the Terminal, run \texttt{source \~{}/.zshrc} or \texttt{source \~{}/.bash\_profile} depending on the file you edited, so the new PATH is loaded into your environment.
+
+%================================================================
+\section{Optional (but \underline{strongly} encouraged): Install a \LaTeX{} Distribution}\label{sec:latex-install}
+%================================================================
+
+\LaTeX{} is a high-quality typesetting system designed for the creation of 
+technical and scientific documents. Rather than formatting text visually, 
+authors write plain-text source files using a markup language that describes 
+the structure and meaning of the content (such as sections, equations, 
+and references). These source files are then compiled into professionally 
+formatted documents (typically PDFs). \LaTeX{} excels at typesetting 
+equations, managing cross-references, and producing consistent, 
+publication-quality output, making it the standard tool for many fields 
+in science, engineering, and mathematics.
+
+\begin{infobox}
+	\LaTeX{} is particularly well suited for interaction with Large Language Models
+\end{infobox}
+
+
+\LaTeX{} is particularly well suited for interaction with Large Language Models 
+(LLMs) because it is a purely textual, declarative markup language that closely 
+resembles structured source code. Unlike binary document formats (e.g., Word or PDF), 
+a \LaTeX{} document exposes its full logical structure---sections, equations, 
+environments, and references---in plain text. This makes it directly 
+interpretable, editable, and generatable by LLMs, which are fundamentally 
+trained on and optimized for text and code. As a result, LLMs can reliably 
+assist with tasks such as drafting mathematical content, refactoring structure, 
+verifying notation, and even debugging compilation issues. In this sense, 
+\LaTeX{} serves as a natural interface between human mathematical reasoning 
+and machine-assisted generation, enabling precise, reproducible, and automatable 
+document workflows.
+
+\LaTeX{} is required if you intend to compile \texttt{.tex} documents
+locally. The program's documents are maintained as \LaTeX{} source files
+in the repository. For authoring and compiling your own
+documents, install the distribution for your platform.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Recommended \LaTeX{} distributions by platform}
+\label{tab:latex-distros}
+\begin{tabular}{llp{7.5cm}}
+\toprule
+\textbf{Platform} & \textbf{Distribution} & \textbf{Download} \\
+\midrule
+Windows & MiKTeX & \url{https://miktex.org} \\
+macOS & MacTeX & \url{https://www.tug.org/mactex/} \\
+Linux (Ubuntu/Debian) & TeX Live & \texttt{sudo apt install texlive-latex-extra texlive-fonts-recommended latexmk} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Verify the installation on any platform with:
+
+\begin{verbatim}
+pdflatex --version
+\end{verbatim}
+
+\vs
+\noindent
+Usage of \LaTeX{} for document preparation, including a mathematics
+notation cheat sheet, is covered in Chapter~\ref{ch:latex}.
+\vs
 
 %================================================================
 \section{Required: Install Visual Studio Code (VSC)}\label{sec:vsc}
@@ -125,15 +190,15 @@ The command line allows you to control your computer by typing instructions, pro
 
 \vs
 
-Now that Git is installed, clone the DAIR\textsuperscript{3} workshop
+Now that Git is installed, clone the \ProjectName{} 
 repository. Open Git Bash (Windows) or a terminal (macOS/Linux),
 navigate to the folder where you want to store the project, and run:
 
-\begin{verbatim}
-git clone https://github.com/DAIR3/DAIR3-Workshop.git
-\end{verbatim}
+{\ttfamily \noindent
+git clone \ProjectGit.git
+}
 
-This creates a folder called \texttt{DAIR3-Workshop} containing all
+This creates a folder called \texttt{\ProjectFolder} containing all
 workshop materials. You only need to do this once. To update your
 local copy later, navigate into the folder and run \texttt{git pull}.
 
@@ -142,13 +207,13 @@ local copy later, navigate into the folder and run \texttt{git pull}.
 %================================================================
 
 To open the \ProjectName{} project in VSC, open a terminal, navigate into the
-\texttt{DAIR3-Workshop} folder you cloned in the previous section,
+\texttt{\ProjectFolder} folder you cloned in the previous section,
 and run:
 
-\begin{verbatim}
-cd DAIR3-Workshop
+{\ttfamily \noindent
+cd \ProjectFolder \\
 code .
-\end{verbatim}
+}
 
 The period after \texttt{code} instructs VSC to use the current folder
 as the working folder. All workshop files will be visible in the VSC
@@ -222,7 +287,7 @@ This will allow you to enter python commands, e.g. \texttt{1+1}
 
 The following errors have been reported by previous participants.
 If you encounter a different issue, consult the \ProjectName{} repository
-issue tracker at \url{https://github.com/DAIR3/DAIR3-Workshop/issues}.
+issue tracker at \url{\ProjectGit/issues}.
 
 \vs
 
@@ -246,42 +311,6 @@ After that, run the script \texttt{activate}.
 %================================================================
 
 If you'd like to code in C or C++, you have several options, including \href{https://gcc.gnu.org}{GCC, the GNU Compiler Collection}, but it requires some effort to install the prerequisites. From Microsoft there is \href{https://visualstudio.microsoft.com/vs/community/}{Visual Studio Community Edition} (VSCE), which encapsulates the complexity of installing multiple compilers (including the .NET framework SDK). I recommend you install VSCE with all ``Workloads'' in ``Web \& Cloud'' and ``Desktop \& Mobile'' (except Python).
-
-%================================================================
-\section{Optional: Install a \LaTeX{} Distribution}\label{sec:latex-install}
-%================================================================
-
-\LaTeX{} is required if you intend to compile \texttt{.tex} documents
-locally. The program's documents are maintained as \LaTeX{} source files
-in the DAIR3-Workshop repository. For authoring and compiling your own
-documents, install the distribution for your platform.
-
-\begin{table}[htbp]
-\centering
-\caption{Recommended \LaTeX{} distributions by platform}
-\label{tab:latex-distros}
-\begin{tabular}{llp{7.5cm}}
-\toprule
-\textbf{Platform} & \textbf{Distribution} & \textbf{Download} \\
-\midrule
-Windows & MiKTeX & \url{https://miktex.org} \\
-macOS & MacTeX & \url{https://www.tug.org/mactex/} \\
-Linux (Ubuntu/Debian) & TeX Live & \texttt{sudo apt install texlive-latex-extra texlive-fonts-recommended latexmk} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-Verify the installation on any platform with:
-
-\begin{verbatim}
-pdflatex --version
-\end{verbatim}
-
-\vs
-\noindent
-Usage of \LaTeX{} for document preparation, including a mathematics
-notation cheat sheet, is covered in Chapter~\ref{ch:latex}.
-\vs
 
 %================================================================
 \section{Optional: Installing PostgreSQL on Linux}

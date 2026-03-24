@@ -331,10 +331,7 @@ Description of methods.
 The \verb|\usepackage{...}| command loads extension packages. The
 packages most relevant to this program are \texttt{amsmath} (extended
 math), \texttt{graphicx} (figures), \texttt{booktabs} (tables), and
-\texttt{hyperref} (clickable links). These are already loaded in the
-shared preamble \texttt{DAIR3Config.tex} for all documents in this
-repository; students writing their own documents will need to load
-them explicitly.
+\texttt{hyperref} (clickable links). 
 
 %================================================================
 \section{Mathematics in \LaTeX{}: A Cheat Sheet}
@@ -481,8 +478,7 @@ Inner product & \verb|\langle x, y \rangle| & $\langle x, y \rangle$ & \\
 
 Figures are included using the \texttt{figure} float environment and
 the \verb|\includegraphics| command from the \texttt{graphicx}
-package, which is already loaded in \texttt{DAIR3Config.tex}. The
-\texttt{pdflatex} compiler accepts PDF, PNG, and JPG image formats.
+package. The \texttt{pdflatex} compiler accepts PDF, PNG, and JPG image formats.
 
 \begin{lstlisting}[style=inlineStyle, caption={Including a figure in \LaTeX{}}]
 \begin{figure}[htbp]
@@ -504,8 +500,8 @@ and a cross-reference target, respectively.
 %================================================================
 
 Tables are built with the \texttt{table} float and the
-\texttt{tabular} environment. The \texttt{booktabs} package (already
-loaded in \texttt{DAIR3Config.tex}) provides clean horizontal rules.
+\texttt{tabular} environment. The \texttt{booktabs} package 
+provides clean horizontal rules.
 Vertical rules (\texttt{|}) are omitted by convention in professional
 documents; \texttt{booktabs} horizontal rules are sufficient.
 

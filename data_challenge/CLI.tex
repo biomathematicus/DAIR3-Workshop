@@ -172,7 +172,7 @@ work at the CLI.
 \end{tipbox}
 
 % ============================================================
-\section{Two Worlds: Windows and Linux}
+\section{Two Worlds: Windows and Linux/Mac}
 \label{sec:two-worlds}
 % ============================================================
 
@@ -185,14 +185,14 @@ history.
 
 Windows uses \emph{backslashes} and drive letters to describe file
 locations:
-\begin{lstlisting}[style=windowsStyle]
-C:\Users\DrG\Documents\DAIR3\main.py
+\begin{lstlisting}[style=windowsStyle,escapeinside={(*@}{@*)}]
+C:\Users\DrG\Documents\(*@\ProjectName@*)\main.py
 \end{lstlisting}
 
 Linux uses \emph{forward slashes} and a single unified file tree rooted
 at \texttt{/}:
-\begin{lstlisting}[style=linuxStyle]
-/home/drg/DAIR3/main.py
+\begin{lstlisting}[style=linuxStyle,escapeinside={(*@}{@*)}]
+/home/drg/(*@\ProjectName@*)/main.py
 \end{lstlisting}
 
 \subsection{Scripts and Executability}
