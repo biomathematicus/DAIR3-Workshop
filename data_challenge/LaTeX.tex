@@ -84,6 +84,206 @@ viewer. The \texttt{.aux}, \texttt{.log}, and \texttt{.out} files are
 auxiliary; they can be deleted safely.
 
 %================================================================
+\section{A More Complete Example}
+\label{sec:latex-example2}
+%================================================================
+
+Exercise L-1 produced the minimal viable document. This section
+introduces a more realistic document that demonstrates the features
+most commonly needed in academic writing: a structured hierarchy of
+sections, an automatically generated table of contents, in-text
+citations linked to a bibliography, and the full range of mathematical
+display modes. Every feature shown here is used in the documents
+produced by this program.
+
+\begin{infobox}{Exercise L-2: A Structured Document with Math and Bibliography}
+Create two files in the same folder. The first is the main document,
+\texttt{report.tex}. The second is the bibliography database,
+\texttt{sample.bib}. Both files must be in the same directory for the
+bibliography to resolve.
+
+\vs
+\noindent
+\textbf{File 1: \texttt{report.tex}}
+
+\begin{lstlisting}[style=inlineStyle]
+\documentclass{article}
+
+\usepackage{amsmath}   % extended math environments
+\usepackage{booktabs}  % professional tables
+\usepackage{hyperref}  % clickable links and cross-references
+
+\title{A Short Report on Mathematical Notation}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+This report demonstrates document structure and mathematical
+notation in \LaTeX{}. For background on literate programming,
+see Knuth~\cite{knuth1984literate}. The \LaTeX{} system itself
+is described in~\cite{lamport1994latex}.
+
+\subsection{Motivation}
+
+Scientific writing requires precise notation. \LaTeX{} provides
+that precision through its mathematical typesetting engine.
+
+\subsubsection{A Note on Style}
+
+Use display equations for any expression that warrants visual
+emphasis, and inline math for symbols embedded in prose.
+
+\section{Mathematical Display Modes}
+
+\subsection{Inline Math}
+
+Inline math is enclosed in single dollar signs: $f(x) = x^2 + 1$.
+It flows within the surrounding text without a line break.
+
+\subsection{Display Math (unnumbered)}
+
+The preferred form for unnumbered display equations is the
+\texttt{\textbackslash[...\textbackslash]} environment:
+
+\[
+    \int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}
+\]
+
+The legacy \texttt{\$\$...\$\$} form produces the same visual
+result but is deprecated in \LaTeX{} and should be avoided in
+new documents.
+
+\subsection{Numbered Equations}
+
+The \texttt{equation} environment produces a numbered equation
+that can be cross-referenced:
+
+\begin{equation}
+    \bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i
+    \label{eq:mean}
+\end{equation}
+
+Equation~\ref{eq:mean} defines the sample mean. An approximation
+for the standard deviation is given in~\cite{gurland1971simple}.
+
+\subsection{Multi-line Aligned Equations}
+
+The \texttt{align} environment aligns multiple equations at a
+designated column, marked with \texttt{\&}:
+
+\begin{align}
+    \mu    &= \mathbb{E}[X]            \label{eq:mu}   \\
+    \sigma^2 &= \mathbb{E}[(X-\mu)^2] \label{eq:var}
+\end{align}
+
+Equations~\ref{eq:mu} and~\ref{eq:var} define the mean and
+variance of a random variable $X$.
+
+\section{A Simple Table}
+
+\begin{table}[htbp]
+\centering
+\caption{Comparison of equation display modes}
+\label{tab:modes}
+\begin{tabular}{lll}
+\toprule
+Mode & Syntax & Use case \\
+\midrule
+Inline     & \texttt{\$...\$}                    & Symbols in prose \\
+Unnumbered & \texttt{\textbackslash[...\textbackslash]}  & Emphasis, no reference needed \\
+Numbered   & \texttt{equation}                   & Cross-referenceable \\
+Aligned    & \texttt{align}                      & Multi-line derivations \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\bibliographystyle{plain}
+\bibliography{sample}
+
+\end{document}
+\end{lstlisting}
+
+\vs
+\noindent
+\textbf{File 2: \texttt{sample.bib}}
+
+\begin{lstlisting}[style=inlineStyle]
+@article{knuth1984literate,
+  author  = {Knuth, Donald E.},
+  title   = {Literate Programming},
+  journal = {The Computer Journal},
+  year    = {1984},
+  volume  = {27},
+  number  = {2},
+  pages   = {97--111}
+}
+
+@book{lamport1994latex,
+  author    = {Lamport, Leslie},
+  title     = {\LaTeX: A Document Preparation System},
+  edition   = {2nd},
+  publisher = {Addison-Wesley},
+  year      = {1994}
+}
+
+@article{gurland1971simple,
+  author  = {Gurland, John and Tripathi, Ram C.},
+  title   = {A Simple Approximation for Unbiased Estimation
+             of the Standard Deviation},
+  journal = {The American Statistician},
+  year    = {1971},
+  volume  = {25},
+  number  = {4},
+  pages   = {30--32}
+}
+\end{lstlisting}
+\end{infobox}
+
+\begin{warningbox}{Compiling with a bibliography requires four steps}
+A single \texttt{pdflatex} pass is not sufficient when the document
+contains \verb|\cite{}| commands. The full sequence is:
+
+\begin{verbatim}
+pdflatex report.tex
+bibtex report
+pdflatex report.tex
+pdflatex report.tex
+\end{verbatim}
+
+The first pass creates the \texttt{.aux} file listing all citation
+keys. \texttt{bibtex} reads the \texttt{.aux} file and the
+\texttt{.bib} database to produce a \texttt{.bbl} file containing
+the formatted bibliography. The second and third \texttt{pdflatex}
+passes incorporate the bibliography and resolve all
+cross-references. Running \texttt{latexmk -pdf report.tex} performs
+all necessary passes automatically.
+\end{warningbox}
+
+\begin{table}[htbp]
+\centering
+\caption{Equation display modes in \LaTeX{}}
+\label{tab:equation-modes}
+\begin{tabular}{p{2.8cm} p{4.2cm} p{2.5cm} p{4.5cm}}
+\toprule
+\textbf{Mode} & \textbf{Syntax} & \textbf{Output style} & \textbf{Notes} \\
+\midrule
+Inline & \verb|$...$| & Within text, compact & Use for symbols and short expressions in prose \\
+Display (legacy) & \verb|$$...$$| & Centered, full size & Deprecated; avoid in new documents \\
+Display (preferred) & \verb|\[...\]| & Centered, full size & Use for unnumbered display equations \\
+Numbered & \verb|\begin{equation}| \verb|...\end{equation}| & Centered with number & Cross-referenceable via \verb|\label|/\verb|\ref| \\
+Multi-line aligned & \verb|\begin{align}| \verb|...\end{align}| & Multiple lines, aligned at \verb|&| & Each line can carry its own \verb|\label| \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%================================================================
 \section{Document Structure}
 \label{sec:latex-structure}
 %================================================================
@@ -383,6 +583,12 @@ science and mathematics:
     \item \textbf{Inline and display math.} Dollar signs for inline
           mathematics and \verb|\[...\]| or the \texttt{equation}
           environment for display mathematics.
+    \item \textbf{Equation modes.} Five modes exist: inline
+          (\verb|$...$|), legacy display (\verb|$$...$$|, deprecated),
+          preferred unnumbered display (\verb|\[...\]|), numbered
+          (\texttt{equation}), and multi-line aligned (\texttt{align}).
+          Use \verb|\[...\]| for unnumbered and \texttt{equation} for
+          cross-referenceable display equations.
     \item \textbf{The math cheat sheet.} A comprehensive reference
           table (Table~\ref{tab:latex-math-cheatsheet}) covering
           arithmetic, functions, summation, integration, Greek
@@ -390,8 +596,14 @@ science and mathematics:
     \item \textbf{Figures and tables.} Float environments with
           \verb|\includegraphics|, \texttt{tabular}, and
           \texttt{booktabs} for professional formatting.
-    \item \textbf{Bibliography.} Citation management with
-          \texttt{.bib} files and the \verb|\cite| command.
+    \item \textbf{Bibliography workflow.} A \texttt{.bib} file stores
+          reference entries. The \verb|\cite{key}| command inserts a
+          citation; \verb|\bibliography{filename}| and
+          \verb|\bibliographystyle{plain}| generate the reference list.
+          Documents with citations require a four-step compilation
+          sequence: two \texttt{pdflatex} passes enclosing one
+          \texttt{bibtex} pass, followed by a final \texttt{pdflatex}.
+          \texttt{latexmk} handles this automatically.
     \item \textbf{LaTeX Workshop.} The VSC extension that provides
           syntax highlighting, live preview, and one-click build,
           eliminating the need for command-line compilation in daily

@@ -121,7 +121,7 @@ both platforms):
 deactivate
 \end{lstlisting}
 
-\subsection{Installing the DAIR3 Required Libraries}
+\subsection{Installing the \ProjectName{} Required Libraries}
 \label{sec:dair3-libraries}
 
 With the DAIR3 environment active, install the required libraries for
@@ -382,7 +382,7 @@ activate them automatically. The goal is to create two scripts:
         two parameters (environment name and project directory), activates
         the environment, and opens VS Code.
   \item \textbf{\texttt{DAIR3}}: A project-specific one-liner that calls
-        \texttt{ActivateEnv} with the correct parameters for the DAIR3
+        \texttt{ActivateEnv} with the correct parameters for the \ProjectName{}
         project.
 \end{enumerate}
 
@@ -460,7 +460,7 @@ Key Windows-specific elements:
 
 \subsubsection{DAIR3.bat}
 
-This file lives in the DAIR3 project directory. It simply calls
+This file lives in the \ProjectName{} project directory. It simply calls
 \texttt{ActivateEnv.bat} with the correct arguments:
 
 \begin{lstlisting}[style=windowsStyle, caption={\texttt{DAIR3.bat}: Project launcher (Windows)}]
@@ -890,7 +890,7 @@ so they do not pollute your shell session.
 \subsection{Defining the DAIR3 Function}
 
 Now add a one-line function that calls \texttt{ActivateEnv} for the
-DAIR3 project:
+\ProjectName{} project:
 
 \begin{lstlisting}[style=linuxStyle, caption={Project-specific function for DAIR3 in \textasciitilde/.bashrc}]
 # -------------------------------------------------------
@@ -916,7 +916,7 @@ Now, from \emph{any directory}, simply type:
 DAIR3
 \end{lstlisting}
 
-The shell will change to your DAIR3 project directory, activate the
+The shell will change to your \ProjectName{} project directory, activate the
 virtual environment, and open VS Code, all in one word, with no
 \texttt{source} prefix required.
 

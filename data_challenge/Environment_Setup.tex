@@ -30,14 +30,6 @@ this chapter.
 	\label{fig:envsetup-3-1}
 \end{figure}
 
-For PC: If you did not add \texttt{python.exe} to the PATH during installation, wait until the installation is complete. Then open File Explorer and right-click on ``This PC.'' Select ``Properties'' from the context menu. In the System window that opens, click on ``Advanced system settings'' in the left-hand sidebar. In the new window, ensure the ``Advanced'' tab is selected and click the ``Environment Variables'' button near the bottom. Under the ``System variables'' section, find and double-click on the variable named ``Path.'' This will open a window where you can add the path to the Python executable manually.
-
-\vs
-
-For Mac: If you did not ensure Python was added to your system's PATH during installation, you can manually do so using the following steps on a Mac. After installation is complete, open the Terminal application. Enter the command \texttt{which python3} or \texttt{which python} to find the path to the installed Python binary. Copy that path. Then open your shell configuration file in a text editor. This will typically be \texttt{\~{}/.zshrc} if you are using the Zsh shell (default on newer versions of macOS) or \texttt{\~{}/.bash\_profile} if you are using Bash. Add the line \texttt{export PATH="/path/to/python:\$PATH"}, replacing \texttt{/path/to/python} with the path you copied. Save the file and close the editor. In the Terminal, run \texttt{source \~{}/.zshrc} or \texttt{source \~{}/.bash\_profile} depending on the file you edited, so the new PATH is loaded into your environment.
-
-\vs
-
 In the window ``Optional Features'' select all features
 
 \begin{figure}[htbp]
@@ -55,6 +47,12 @@ Select ``\textit{Install Python X.XX for all users}'' if you can and want. This 
 	\caption{Python Advanced Options screen showing ``Install for all users'' selected.}
 	\label{fig:envsetup-4-2}
 \end{figure}
+
+For PC: If you did not add \texttt{python.exe} to the PATH during installation, wait until the installation is complete. Then open File Explorer and right-click on ``This PC.'' Select ``Properties'' from the context menu. In the System window that opens, click on ``Advanced system settings'' in the left-hand sidebar. In the new window, ensure the ``Advanced'' tab is selected and click the ``Environment Variables'' button near the bottom. Under the ``System variables'' section, find and double-click on the variable named ``Path.'' This will open a window where you can add the path to the Python executable manually.
+
+\vs
+
+For Mac: If you did not ensure Python was added to your system's PATH during installation, you can manually do so using the following steps on a Mac. After installation is complete, open the Terminal application. Enter the command \texttt{which python3} or \texttt{which python} to find the path to the installed Python binary. Copy that path. Then open your shell configuration file in a text editor. This will typically be \texttt{\~{}/.zshrc} if you are using the Zsh shell (default on newer versions of macOS) or \texttt{\~{}/.bash\_profile} if you are using Bash. Add the line \texttt{export PATH="/path/to/python:\$PATH"}, replacing \texttt{/path/to/python} with the path you copied. Save the file and close the editor. In the Terminal, run \texttt{source \~{}/.zshrc} or \texttt{source \~{}/.bash\_profile} depending on the file you edited, so the new PATH is loaded into your environment.
 
 %================================================================
 \section{Required: Install Visual Studio Code (VSC)}\label{sec:vsc}
@@ -140,10 +138,10 @@ workshop materials. You only need to do this once. To update your
 local copy later, navigate into the folder and run \texttt{git pull}.
 
 %================================================================
-\section{Required: Open the DAIR3 project in Visual Studio Code}\label{sec:vscstart}
+\section{Required: Open the \ProjectName{} project in Visual Studio Code}\label{sec:vscstart}
 %================================================================
 
-To open the DAIR3 project in VSC, open a terminal, navigate into the
+To open the \ProjectName{} project in VSC, open a terminal, navigate into the
 \texttt{DAIR3-Workshop} folder you cloned in the previous section,
 and run:
 
@@ -223,7 +221,7 @@ This will allow you to enter python commands, e.g. \texttt{1+1}
 %================================================================
 
 The following errors have been reported by previous participants.
-If you encounter a different issue, consult the DAIR3 repository
+If you encounter a different issue, consult the \ProjectName{} repository
 issue tracker at \url{https://github.com/DAIR3/DAIR3-Workshop/issues}.
 
 \vs
