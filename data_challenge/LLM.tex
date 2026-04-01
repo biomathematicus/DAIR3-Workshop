@@ -784,3 +784,37 @@ Switching from single-machine to two-machine mode, or from the Dell's
 local Ollama to the Spark, requires only updating \texttt{LLM\_BASE\_URL}
 in the environment file. The \texttt{ProviderAdapter} protocol
 transparently routes requests to whichever endpoint is configured.
+
+\section{Setting Up Ollama with a GUI on Ubuntu}
+
+To transition from a command-line interface to a graphical experience, follow these steps to install the Ollama backend and the Open WebUI frontend.
+
+\subsection{Step 1: Install Ollama Backend}
+First, install the core Ollama service using the official installation script:
+\begin{verbatim}
+curl -fsSL https://ollama.com | sh
+\end{verbatim}
+
+\subsection{Step 2: Deploy Open WebUI via Docker}
+Open WebUI is the most popular ChatGPT-like interface for Ollama. Run the following Docker command to pull the image and start the container:
+\begin{verbatim}
+docker run -d -p 3000:8080 \
+  --add-host=host.docker.internal:host-gateway \
+  -v open-webui:/app/backend/data \
+  --name open-webui \
+  ghcr.io/open-webui/open-webui:main
+\end{verbatim}
+
+\subsection{Step 3: Access the Interface}
+Once the container is running, open your preferred web browser and navigate to:
+\begin{quote}
+    \texttt{http://localhost:3000}
+\end{quote}
+You will be prompted to create an admin account (stored locally) to begin chatting with your models.
+
+\subsection{Technical Considerations}
+\begin{itemize}
+    \item \textbf{GPU Support:} For NVIDIA users, ensure the \texttt{nvidia-container-toolkit} is installed to enable hardware acceleration within Docker.
+    \item \textbf{External Access:} To access this GUI from another machine, set the environment variable \texttt{OLLAMA\_HOST=0.0.0.0} in your systemd service configuration.
+\end{itemize}
+
