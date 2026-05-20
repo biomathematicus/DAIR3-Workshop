@@ -246,40 +246,53 @@ class ClaudeChatbot(QWidget):
         temperature = self.temperature
 
         def do_upload(status_cb):
+            from file_loader import classify_file, read_text, read_base64
+
             status_cb("Classifying file (local)")
-            mime_type, _ = mimetypes.guess_type(file_path)
-            if mime_type and mime_type.startswith("image/"):
+            category, mime_type = classify_file(file_path)
+
+            if category == "text":
+                status_cb("Reading text file (local)")
+                text = read_text(file_path)
+                ack_message = {
+                    "role": "user",
+                    "content": (
+                        f"I've uploaded a text file '{filename}'. Contents:\n\n"
+                        f"{text}\n\n"
+                        "Please acknowledge this file. I will ask follow-up questions about it."
+                    ),
+                }
+            elif category == "image":
                 status_cb("Base64-encoding image (local)")
-                media_kind = "image"
-            elif mime_type == "application/pdf":
+                b64_data = read_base64(file_path)
+                ack_message = {
+                    "role": "user",
+                    "content": [
+                        {"type": "image", "source": {
+                            "type": "base64", "media_type": mime_type, "data": b64_data,
+                        }},
+                        {"type": "text", "text": "Please acknowledge this file. I will ask follow-up questions about it."},
+                    ],
+                }
+            elif category == "pdf":
                 status_cb("Base64-encoding PDF (local)")
-                media_kind = "pdf"
+                b64_data = read_base64(file_path)
+                ack_message = {
+                    "role": "user",
+                    "content": [
+                        {"type": "document", "source": {
+                            "type": "base64", "media_type": "application/pdf", "data": b64_data,
+                        }},
+                        {"type": "text", "text": "Please acknowledge this file. I will ask follow-up questions about it."},
+                    ],
+                }
             else:
                 raise ValueError(
-                    f"Unsupported file type: {mime_type or 'unknown'}. "
-                    "Claude supports images (jpeg/png/gif/webp) and PDFs via drag-and-drop."
+                    f"Unsupported file type: {mime_type or 'unknown'} ({filename}). "
+                    "Supported: text (.txt/.md/.csv/.json/.ipynb/source code/…), "
+                    "images (jpeg/png/gif/webp), PDFs."
                 )
 
-            with open(file_path, "rb") as f:
-                file_bytes = f.read()
-            b64_data = base64.standard_b64encode(file_bytes).decode("ascii")
-
-            if media_kind == "image":
-                content_block = {"type": "image", "source": {
-                    "type": "base64", "media_type": mime_type, "data": b64_data,
-                }}
-            else:
-                content_block = {"type": "document", "source": {
-                    "type": "base64", "media_type": "application/pdf", "data": b64_data,
-                }}
-
-            ack_message = {
-                "role": "user",
-                "content": [
-                    content_block,
-                    {"type": "text", "text": "Please acknowledge this file. I will ask follow-up questions about it."},
-                ],
-            }
             history.append(ack_message)
 
             status_cb("Sending to Anthropic Claude (remote)")
